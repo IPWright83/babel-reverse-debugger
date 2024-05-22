@@ -6,7 +6,7 @@ function ___instrumentFunction(type, name, lineNumber, args) {
    console.log(name, JSON.parse(JSON.stringify(args)));
 }
 
-function ___instrumentReturn(value) {
+function ___instrumentReturn(type, lineNumber, value) {
   console.log(value);
   return value;
 }
@@ -40,35 +40,38 @@ function ___captureVariable(type, name, lineNumber, value) {
   /**
    * Injects the recording of a value return from a function
    */
-  function injectReturn({ t, path, lineNumber, argument, ASTType }) {
-    // Ensure we don't instrument our own function
-    const functionName = path.findParent((p) => t.isFunction(p))?.node?.id?.name;
-    if (shouldSkip(path)) {
-      return;
-    }
-
-    const captureReturn = t.callExpression(t.identifier("___instrumentReturn"), [argument]);
-    path.node.argument = captureReturn;
-  }
-
-  /**
-   * Should we skip this particular AST node?
-   */
-  function shouldSkip(path) {
-    // Our internal functions
-    const name = extractName(path);
-    if (name.startsWith("___")) return true;
-
-    if (path.node.loc == undefined || path.node.loc.start === undefined || path.node.loc.start.line === undefined) {
-      return true;
-    }
+  function injectReturn({ t, path, ASTType }) {
+    const { node, parent } = path;
+    const { argument } = node;
+    const { callee } = parent;
 
     // This prevents a double instrument occuring when an arrow function
     // is assigned onto a class
     //    class scientificCalculator {
     //       cos = (degrees) => Math.cos(degress * (Math.PI / 180))
     //    }
-    if (path.parent.callee && path.parent.callee.name === "_defineProperty" && path.node.type === "ArrowFunctionExpression") {
+    if (callee?.name === "_defineProperty" && ASTType === "ArrowFunctionExpression") {
+      return;
+    }
+
+    const lineNumber = argument?.loc?.start?.line;
+    if (lineNumber === undefined) {
+      return;
+    }
+
+    const captureReturn = t.callExpression(t.identifier("___instrumentReturn"), [t.stringLiteral(ASTType), t.numericLiteral(lineNumber), argument]);
+    path.node.argument = captureReturn;
+  }
+
+  /**
+   * Should we skip this particular AST node?
+   */
+  function shouldSkipFunctionCapture(path) {
+    // Our internal functions
+    const name = extractName(path);
+    if (name.startsWith("___")) return true;
+
+    if (path.node.loc == undefined || path.node.loc.start === undefined || path.node.loc.start.line === undefined) {
       return true;
     }
 
@@ -82,42 +85,18 @@ function ___captureVariable(type, name, lineNumber, value) {
   function extractName(path) {
     const { node, parent } = path;
 
-    if (node.id && node.id.name) {
-      return node.id.name;
-    }
-
-    if (node.key && node.key.name) {
-      return node.key.name;
-    }
-
-    if (parent.id && parent.id.name) {
-      return parent.id.name;
-    }
-
-    if (parent.key && parent.key.name) {
-      return parent.key.name;
-    }
-
-    // This is used to extract out function names from return statements
-    // and helps prevent us nesting an ___injectReturn inside the ___injectReturn itself
-    const parentFunction = path.findParent((p) => t.isFunction(p));
-    if (parentFunction && parentFunction.node && parentFunction.node.id) {
-      return parentFunction.node.id.name;
-    }
-
-    return "anonymous";
+    return node.id?.name ??
+      node.key?.name ??
+      parent?.id?.name ??
+      parent?.key?.name ??
+      // This is used to extract out function names from return statements
+      // and helps prevent us nesting an ___injectReturn inside the ___injectReturn itself
+      path.findParent((p) => t.isFunction(p))?.node?.id?.name ??
+      "anonymous";
   }
 
   function getLineNumber(path) {
-    if(path.node.loc && path.node.loc.start && path.node.loc.start.line !== undefined) {
-      return path.node.loc.start.line;
-    }
-
-    if (path.parent.loc && path.parent.loc.start && path.parent.loc.start.line !== undefined) {
-      return path.parent.loc.start.line;
-    }
-
-    return undefined;
+    return path.node.loc?.start?.line ?? path.parent.loc?.start?.line;
   }
   
   return {
@@ -140,7 +119,7 @@ function ___captureVariable(type, name, lineNumber, value) {
        *     }
        */
       FunctionDeclaration(path) {
-        if (shouldSkip(path)) { return; }
+        if (shouldSkipFunctionCapture(path)) { return; }
 
         const name = extractName(path);
         const lineNumber = getLineNumber(path);
@@ -160,7 +139,7 @@ function ___captureVariable(type, name, lineNumber, value) {
        *     } 
        */
       FunctionExpression(path) {
-        if (shouldSkip(path)) { return; }
+        if (shouldSkipFunctionCapture(path)) { return; }
         
         const name = extractName(path);
         const lineNumber = getLineNumber(path);
@@ -179,7 +158,7 @@ function ___captureVariable(type, name, lineNumber, value) {
        *     const sum = (a, b) => a + b;
        */
       ArrowFunctionExpression(path) {
-        if (shouldSkip(path)) { return; }
+        if (shouldSkipFunctionCapture(path)) { return; }
 
         const name = extractName(path);
         const lineNumber = getLineNumber(path);
@@ -197,7 +176,7 @@ function ___captureVariable(type, name, lineNumber, value) {
        *    }
        */
       ClassMethod(path) {
-        if (shouldSkip(path)) { return; }
+        if (shouldSkipFunctionCapture(path)) { return; }
 
         const name = extractName(path);
         const lineNumber = getLineNumber(path);
@@ -211,10 +190,7 @@ function ___captureVariable(type, name, lineNumber, value) {
        * Handle ReturnStatements such as:
        */
       ReturnStatement(path) {
-          const lineNumber = path.node.loc;
-          const argument = path.node.argument;
-
-          injectReturn({ t, path, lineNumber, argument, ASTType: "ReturnStatement" });
+          injectReturn({ t, path, ASTType: "ReturnStatement" });
       },
       // ExpressionStatement(path) {
          
