@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Function Decorators Converts Basic function correctly 1`] = `
+""use strict";
+
+/**
+ * This is the add function with a comment
+ * to test that the line numbers work correctly
+ */
+function add(a, b) {
+  ___instrumentFunction("FunctionDeclaration", "add", 5, {
+    a: a,
+    b: b
+  });
+  return ___instrumentReturn(a + b);
+}"
+`;

@@ -123,6 +123,11 @@ function ___captureVariable(type, name, lineNumber, value) {
   return {
     visitor: {
       Program(path) {
+        // Don't inject our functions in tests
+        if (process.env && process.env.NODE_ENV === 'test') {
+          return;
+        }
+
         // We need to parse our code into an AST and then insert it
         // into the body of the program so we can call out to the various
         // functions later on
@@ -139,6 +144,7 @@ function ___captureVariable(type, name, lineNumber, value) {
 
         const name = extractName(path);
         const lineNumber = getLineNumber(path);
+
         const parameters = path.node.params.map((p) =>
           t.objectProperty(t.identifier(p.name), t.identifier(p.name))
         );
