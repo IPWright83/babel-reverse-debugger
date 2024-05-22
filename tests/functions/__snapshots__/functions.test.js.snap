@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Function Decorators Converts Arrow function correctly 1`] = `
+""use strict";
+
+var subtract = function subtract(a, b) {
+  ___instrumentFunction("ArrowFunctionExpression", "subtract", 1, {
+    a: a,
+    b: b
+  });
+  return a - b;
+};"
+`;
+
 exports[`Function Decorators Converts Basic function correctly 1`] = `
 ""use strict";
 
@@ -14,4 +26,58 @@ function add(a, b) {
   });
   return ___instrumentReturn(a + b);
 }"
+`;
+
+exports[`Function Decorators Converts IIFE correctly 1`] = `
+""use strict";
+
+(function (a, b) {
+  ___instrumentFunction("FunctionExpression", "anonymous", 1, {
+    a: a,
+    b: b
+  });
+  return ___instrumentReturn(a + b);
+})(3, 4);"
+`;
+
+exports[`Function Decorators Converts Object with arrow function (explicit return) correctly 1`] = `
+""use strict";
+
+var calculator = {
+  add: function add(a, b) {
+    ___instrumentFunction("ArrowFunctionExpression", "add", 2, {
+      a: a,
+      b: b
+    });
+    return ___instrumentReturn(a + b);
+  }
+};"
+`;
+
+exports[`Function Decorators Converts Object with arrow function (implicit return) correctly 1`] = `
+""use strict";
+
+var calculator = {
+  multiply: function multiply(a, b) {
+    ___instrumentFunction("ArrowFunctionExpression", "multiply", 2, {
+      a: a,
+      b: b
+    });
+    return a * b;
+  }
+};"
+`;
+
+exports[`Function Decorators Converts Object with function correctly 1`] = `
+""use strict";
+
+var calculator = {
+  subtract: function subtract(a, b) {
+    ___instrumentFunction("FunctionExpression", "subtract", 2, {
+      a: a,
+      b: b
+    });
+    return ___instrumentReturn(a - b);
+  }
+};"
 `;
