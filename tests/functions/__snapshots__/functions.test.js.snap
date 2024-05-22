@@ -28,6 +28,18 @@ function add(a, b) {
 }"
 `;
 
+exports[`Function Decorators Converts Does New Function object correctly 1`] = `
+""use strict";
+
+new Function('return 42');"
+`;
+
+exports[`Function Decorators Converts Does not New Function object correctly 1`] = `
+""use strict";
+
+new Function('return 42');"
+`;
+
 exports[`Function Decorators Converts IIFE correctly 1`] = `
 ""use strict";
 
@@ -38,6 +50,12 @@ exports[`Function Decorators Converts IIFE correctly 1`] = `
   });
   return ___instrumentReturn("ReturnStatement", 2, a + b);
 })(3, 4);"
+`;
+
+exports[`Function Decorators Converts New Function by skipping it correctly 1`] = `
+""use strict";
+
+new Function('return 42');"
 `;
 
 exports[`Function Decorators Converts Object with arrow function (explicit return) correctly 1`] = `

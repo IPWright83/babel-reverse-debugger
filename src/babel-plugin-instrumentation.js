@@ -7,7 +7,7 @@ function ___instrumentFunction(type, name, lineNumber, args) {
 }
 
 function ___instrumentReturn(type, lineNumber, value) {
-  console.log(value);
+  console.log(type, value);
   return value;
 }
 
@@ -41,6 +41,7 @@ function ___captureVariable(type, name, lineNumber, value) {
    * Injects the recording of a value return from a function
    */
   function injectReturn({ t, path, ASTType }) {
+    const name = extractName(path);
     const { node, parent } = path;
     const { argument } = node;
     const { callee } = parent;
@@ -55,7 +56,7 @@ function ___captureVariable(type, name, lineNumber, value) {
     }
 
     const lineNumber = argument?.loc?.start?.line;
-    if (lineNumber === undefined) {
+    if (lineNumber === undefined || name.startsWith("___")) {
       return;
     }
 

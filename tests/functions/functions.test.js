@@ -28,6 +28,7 @@ describe("Function Decorators", () => {
         ["Object with function", "object-function.js"],
         ["Object with function (no return)", "object-function-no-return.js"],
         ["Object with functions", "object-all.js"]
+        ["New Function by skipping it", "new-function.js"]
     ])("Converts %s correctly", async (name, inputFile) => {
         const filePath = path.resolve(__dirname, inputFile);
         const output = await runTransform(filePath);
