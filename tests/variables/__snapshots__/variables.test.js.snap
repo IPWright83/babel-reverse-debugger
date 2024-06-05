@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Variable Decorators Converts Arrow Function correctly 1`] = `
+""use strict";
+
+var hello = function hello() {
+  ___instrumentFunction("ArrowFunctionExpression", "hello", 1, {});
+  return ___instrumentReturn("ReturnStatement", 1, "Hello World");
+};
+___captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB");"
+`;
+
+exports[`Variable Decorators Converts Boolean correctly 1`] = `
+""use strict";
+
+var isTrue = true;
+___captureAssignment("VariableDeclaration", "isTrue", 1, true);"
+`;
+
+exports[`Variable Decorators Converts Function correctly 1`] = `
+""use strict";
+
+var hello = function hello() {
+  ___instrumentFunction("FunctionExpression", "hello", 1, {});
+  return ___instrumentReturn("ReturnStatement", 1, "Hello World");
+};
+___captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB");"
+`;
+
+exports[`Variable Decorators Converts Object correctly 1`] = `
+""use strict";
+
+var foo = {
+  bar: {
+    baz: "foo-bar-baz"
+  }
+};
+___captureAssignment("VariableDeclaration", "foo", 1, {
+  bar: {
+    baz: "foo-bar-baz"
+  }
+});"
+`;
+
+exports[`Variable Decorators Converts String correctly 1`] = `
+""use strict";
+
+var hello = "Hello World";
+___captureAssignment("VariableDeclaration", "hello", 1, "Hello World");"
+`;
+
+exports[`Variable Decorators Converts const assignment correctly 1`] = `
+""use strict";
+
+var fixedCount = 8;
+___captureAssignment("VariableDeclaration", "fixedCount", 1, 8);"
+`;
+
+exports[`Variable Decorators Converts let assignment correctly 1`] = `
+""use strict";
+
+var count = 1;
+___captureAssignment("VariableDeclaration", "count", 1, 1);"
+`;
+
+exports[`Variable Decorators Converts multi value assignment correctly 1`] = `
+""use strict";
+
+var w = 4,
+  x = 3;
+___captureAssignment("VariableDeclaration", "x", 1, 3);
+___captureAssignment("VariableDeclaration", "w", 1, 4);
+var y,
+  z = 54;
+___captureAssignment("VariableDeclaration", "z", 2, 54);
+___captureAssignment("VariableDeclaration", "y", 2, undefined);"
+`;
+
+exports[`Variable Decorators Converts var assignment correctly 1`] = `
+""use strict";
+
+var z = 54;
+___captureAssignment("VariableDeclaration", "z", 1, 54);"
+`;
+
+exports[`Variable Decorators Converts var assignment correctly 2`] = `
+""use strict";
+
+var z = 54;
+___captureAssignment("VariableDeclaration", "z", 1, 54);"
+`;

@@ -1,0 +1,1 @@
+const fixedCount = 8;

@@ -1,6 +1,17 @@
 /**
- * This is the add function with a comment
- * to test that the line numbers work correctly
+ * Assignments & Expressions
+ */
+const fixedCount = 8;
+let count = 1;
+count++;
+count += 1;
+count = 4;
+const w = 4, x = 3;
+var y, z = 54;
+const obj = { foo: { bar: "baz" } };
+
+/**
+ * Functions
  */
 function add(a, b) {
   return a + b;
@@ -14,7 +25,7 @@ const calculator = {
   multiply: (a, b) => a * b,
   divide: (a, b) => { return a / b; },
 };
-
+ 
 class scientificCalculator {
   constructor(name) {
     this.name = name;

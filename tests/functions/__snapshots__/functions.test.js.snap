@@ -9,7 +9,8 @@ var subtract = function subtract(a, b) {
     b: b
   });
   return ___instrumentReturn("ReturnStatement", 1, a - b);
-};"
+};
+___captureAssignment("VariableDeclaration", "subtract", 1, "\\u03BB");"
 `;
 
 exports[`Function Decorators Converts Basic function correctly 1`] = `
@@ -121,7 +122,10 @@ var calculator = {
     });
     return ___instrumentReturn("ReturnStatement", 2, a + b);
   }
-};"
+};
+___captureAssignment("VariableDeclaration", "calculator", 1, {
+  add: "\\u03BB"
+});"
 `;
 
 exports[`Function Decorators Converts Object with arrow function (implicit return) correctly 1`] = `
@@ -135,7 +139,10 @@ var calculator = {
     });
     return ___instrumentReturn("ReturnStatement", 2, a * b);
   }
-};"
+};
+___captureAssignment("VariableDeclaration", "calculator", 1, {
+  multiply: "\\u03BB"
+});"
 `;
 
 exports[`Function Decorators Converts Object with function (no return) correctly 1`] = `
@@ -149,7 +156,11 @@ var calculator = {
   cancel: function cancel() {
     ___instrumentFunction("ArrowFunctionExpression", "cancel", 3, {});
   }
-};"
+};
+___captureAssignment("VariableDeclaration", "calculator", 1, {
+  clear: "\\u03BB",
+  cancel: "\\u03BB"
+});"
 `;
 
 exports[`Function Decorators Converts Object with function correctly 1`] = `
@@ -163,7 +174,10 @@ var calculator = {
     });
     return ___instrumentReturn("ReturnStatement", 2, a - b);
   }
-};"
+};
+___captureAssignment("VariableDeclaration", "calculator", 1, {
+  subtract: "\\u03BB"
+});"
 `;
 
 exports[`Function Decorators Converts Object with functions correctly 1`] = `
@@ -205,5 +219,13 @@ var calculator = {
   cancel: function cancel() {
     ___instrumentFunction("ArrowFunctionExpression", "cancel", 7, {});
   }
-};"
+};
+___captureAssignment("VariableDeclaration", "calculator", 1, {
+  add: "\\u03BB",
+  subtract: "\\u03BB",
+  multiply: "\\u03BB",
+  divide: "\\u03BB",
+  clear: "\\u03BB",
+  cancel: "\\u03BB"
+});"
 `;
