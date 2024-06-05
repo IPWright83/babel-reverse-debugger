@@ -1,23 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Variable Decorators Converts ++Increment correctly 1`] = `
-"{ name: 'count', value: { type: 'NumericLiteral', value: 2 } }
-"use strict";
-
-var count = 2;
-___captureAssignment("VariableDeclaration", "count", 1, 2);
-count += 2;
-___captureAssignment("AssignmentExpression", "count", 2, 4);"
-`;
-
-exports[`Variable Decorators Converts +=Increment correctly 1`] = `
-""use strict";
-
-var count = 1;
-___captureAssignment("VariableDeclaration", "count", 1, 2);
-count++;"
-`;
-
 exports[`Variable Decorators Converts Arrow Function correctly 1`] = `
 ""use strict";
 
@@ -27,6 +9,22 @@ var hello = function hello() {
 };
 ___captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB");"
 `;
+
+exports[`Variable Decorators Converts Assign to Undefined correctly 1`] = `
+"{ name: 'count', value: { type: 'Identifier', name: 'undefined' } }
+"use strict";
+
+var count = 3;
+___captureAssignment("VariableDeclaration", "count", 1, 3);
+count = undefined;
+___captureAssignment("AssignmentExpression", "count", 2, undefined);"
+`;
+
+exports[`Variable Decorators Converts Assign to built in function result correctly 1`] = `""use strict";"`;
+
+exports[`Variable Decorators Converts Assign to function result correctly 1`] = `""use strict";"`;
+
+exports[`Variable Decorators Converts Assign to operation correctly 1`] = `""use strict";"`;
 
 exports[`Variable Decorators Converts Boolean correctly 1`] = `
 ""use strict";
@@ -43,6 +41,24 @@ var hello = function hello() {
   return ___instrumentReturn("ReturnStatement", 1, "Hello World");
 };
 ___captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB");"
+`;
+
+exports[`Variable Decorators Converts Increment++ correctly 1`] = `
+"{ name: 'count', value: { type: 'NumericLiteral', value: 2 } }
+"use strict";
+
+var count = 2;
+___captureAssignment("VariableDeclaration", "count", 1, 2);
+count += 2;
+___captureAssignment("AssignmentExpression", "count", 2, 2);"
+`;
+
+exports[`Variable Decorators Converts Increment+= correctly 1`] = `
+""use strict";
+
+var count = 1;
+___captureAssignment("VariableDeclaration", "count", 1, 1);
+count++;"
 `;
 
 exports[`Variable Decorators Converts Object correctly 1`] = `

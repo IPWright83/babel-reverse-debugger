@@ -31,9 +31,12 @@ describe("Variable Decorators", () => {
         ["Arrow Function", "arrow-assignment.js"],
         ["Object", "object-assignment.js"],
         ["Re-assignment", "re-assignment.js"],
-        ["++Increment", "incrementplusplus.js"],
-        ["+=Increment", "incrementplusequals.js"]
-        ["Assign to Undefined", "assign-to-undefined.js"]
+        ["Increment++", "incrementplusplus.js"],
+        ["Increment+=", "incrementplusequals.js"],
+        ["Assign to Undefined", "assign-to-undefined.js"],
+        ["Assign to operation", "assign-to-operation.js"],
+        ["Assign to function result", "assign-to-func-result.js"],
+        ["Assign to built in function result", "assign-to-builtin-result.js"]
     ])("Converts %s correctly", async (name, inputFile) => {
         const filePath = path.resolve(__dirname, inputFile);
         const output = await runTransform(filePath);
