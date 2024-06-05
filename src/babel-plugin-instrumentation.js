@@ -93,14 +93,32 @@ function ___captureVariable(type, name, lineNumber, value) {
   function extractName(path) {
     const { node, parent } = path;
 
-    return node.id?.name ??
+    const name = node.id?.name ??
       node.key?.name ??
       parent?.id?.name ??
-      parent?.key?.name ??
-      // This is used to extract out function names from return statements
-      // and helps prevent us nesting an ___injectReturn inside the ___injectReturn itself
-      path.findParent((p) => t.isFunction(p))?.node?.id?.name ??
-      "anonymous";
+      parent?.key?.name;
+
+    if (name) {
+      return name;
+    }
+
+    // Attempt to handle arrow functions inside a class
+    //    class scientificCalculator {
+    //       cos = (degrees) => Math.cos(degress * (Math.PI / 180))
+    //    }
+    if (!name && ["ArrowFunctionExpression", "FunctionExpression"].includes(node.type)) {
+      const isInDefineProperty = parent.type === "CallExpression" && parent.callee?.name === "_defineProperty";
+
+      // Force this function to be skipped as we end up with duplicate instrumentation calls
+      // so we'll just use the ArrowFunctionExpression instead
+      if (node.type === "FunctionExpression" && isInDefineProperty) {
+        return "___";
+      }
+
+      if (node.type === "ArrowFunctionExpression" && isInDefineProperty) {
+        return parent.arguments?.[1]?.value;
+      }
+    }
   }
 
   function getLineNumber(path) {

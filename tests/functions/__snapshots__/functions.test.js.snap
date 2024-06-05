@@ -84,7 +84,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 var scientificCalculator = /*#__PURE__*/_createClass(function scientificCalculator() {
   _classCallCheck(this, scientificCalculator);
   _defineProperty(this, "cos", function (degrees) {
-    ___instrumentFunction("ArrowFunctionExpression", "scientificCalculator", 2, {
+    ___instrumentFunction("ArrowFunctionExpression", "cos", 2, {
       degrees: degrees
     });
     return ___instrumentReturn("ReturnStatement", 2, Math.cos(degrees * (Math.PI / 180)));
