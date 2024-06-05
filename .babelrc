@@ -1,4 +1,4 @@
 {
     "presets": ["@babel/preset-env"],
-    "plugins": ["./src/babel-plugin-instrumentation"]
+    "plugins": []
 }

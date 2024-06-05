@@ -10,7 +10,7 @@ const subtract = (a, b) => a - b;
 
 const calculator = {
   add: (a, b) => { return a + b; }, 
-  subtract: function(a, b) { return a - b; },
+  subtract: function (a, b) { return a - b; },
   multiply: (a, b) => a * b,
   divide: (a, b) => { return a / b; },
 };
@@ -27,15 +27,23 @@ class scientificCalculator {
   cos = (degrees) => Math.cos(degrees * (Math.PI / 180))
 }
 
-(function(a, b) {
-    return a + b;
+const foo = () => {
+  const bar = () => {
+    return () => {
+      return "baz";
+    }
+  }
+}
+
+(function (a, b) {
+  return a + b;
 })(3, 4);
 
 // Assign some values
 const a = add(1, 3);
 console.log(`Result of 4-1 = ${subtract(4, 1)}`);
 const result = {
-   add: calculator.add(1, 7),
+  add: calculator.add(1, 7),
   subtract: calculator.subtract(8, 1),
 };
 result.multiply = calculator.multiply(1, 6);

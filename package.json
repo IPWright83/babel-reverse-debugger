@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx babel add.js --out-file out/add.js --quiet",
-    "start": "npm run build && node ./out/add.js",
-    "test": "jest"
+    "build": "npx babel add.js --out-file out/add.js --quiet --config-file ./.babelrc-test",
+    "start": "npm run build && node ./out/add.js --config-file ./.babelrc-test",
+    "test": "jest --runInBand"
   },
   "author": "IPWright83",
   "license": "none",
@@ -23,8 +23,7 @@
   "jest": {
     "transformIgnorePatterns": [
       "./src/babel-plugin-instrumentation.js",
-      "/node_modules/",
-      "/*.test.js"
+      "/node_modules/"
     ],
     "testEnvironment": "node",
     "testRegex": "./tests/.+\\.test\\.js$"
