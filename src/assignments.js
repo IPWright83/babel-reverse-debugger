@@ -30,20 +30,20 @@ function getObjectExpression(t, objExpression) {
     return t.objectExpression(properties);
 }
 
-function getValue(t, declaration) {
-    if (!declaration.init) {
+function getValue(t, assignment) {
+    if (!assignment.value) {
         return t.identifier("undefined");
     }
 
-    switch (declaration.init.type) {
+    switch (assignment.type) {
         case "NumericLiteral":
-            return t.numericLiteral(declaration.init.value);
+            return t.numericLiteral(assignment.value);
         case "StringLiteral":
-            return t.stringLiteral(declaration.init.value);
+            return t.stringLiteral(assignment.value);
         case "BooleanLiteral":
-            return t.booleanLiteral(declaration.init.value);
+            return t.booleanLiteral(assignment.value);
         case "ObjectExpression":
-            return getObjectExpression(t, declaration.init);
+            return getObjectExpression(t, assignment);
         default: {
             return t.stringLiteral("λ");
         }
@@ -57,25 +57,24 @@ function inject({ t, path, ASTType }) {
     if (skip(path)) { return }
 
     const { node } = path;
-    const { declarations = [], init } = node; 
     const lineNumber = utils.getLineNumber(path);
 
-    declarations.forEach(declaration => {
-        const name = declaration.id?.name;
-        const value = getValue(t, declaration);
+    // Handle variable declarations
+    const name = node.left?.name ?? node.left?.property.name;
+    const value = getValue(t, node.right);
 
-        // console.log(ASTType, name, lineNumber, value);
-        const captureAssignment = t.expressionStatement(
-            t.callExpression(t.identifier("___captureAssignment"), [
-                t.stringLiteral(ASTType),
-                t.stringLiteral(name),
-                t.numericLiteral(lineNumber),
-                value
-            ])
-        );
+    console.log({ name, value });
+    debugger;
+    const captureAssignment = t.expressionStatement(
+        t.callExpression(t.identifier("___captureAssignment"), [
+            t.stringLiteral(ASTType),
+            t.stringLiteral(name),
+            t.numericLiteral(lineNumber),
+            value
+        ])
+    );
 
-        path.insertAfter(captureAssignment);
-    })
+    path.insertAfter(captureAssignment);
 }
 
 module.exports = {

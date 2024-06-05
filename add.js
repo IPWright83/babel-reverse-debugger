@@ -3,10 +3,10 @@
  */
 const fixedCount = 8;
 let count = 1;
+count = 4;
 count++;
 count += 1;
-count = 4;
-const w = 4, x = 3;
+const w = 4, x = 3;//66acad
 var y, z = 54;
 const obj = { foo: { bar: "baz" } };
 

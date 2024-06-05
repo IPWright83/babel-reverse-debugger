@@ -40,7 +40,6 @@ function inject({ t, path, ASTType }) {
 
     // Check if the argument is a call expression to ___instrumentReturn
     // This prevents infinite recursion
-    debugger;
     if (t.isCallExpression(argument) && t.isIdentifier(argument.callee) && argument.callee.name === "___instrumentReturn") {
         return true;
     }

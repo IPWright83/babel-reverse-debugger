@@ -29,7 +29,11 @@ describe("Variable Decorators", () => {
         ["Boolean", "bool-assignment.js"],
         ["Function", "function-assignment.js"],
         ["Arrow Function", "arrow-assignment.js"],
-        ["Object", "object-assignment.js"]
+        ["Object", "object-assignment.js"],
+        ["Re-assignment", "re-assignment.js"],
+        ["++Increment", "incrementplusplus.js"],
+        ["+=Increment", "incrementplusequals.js"]
+        ["Assign to Undefined", "assign-to-undefined.js"]
     ])("Converts %s correctly", async (name, inputFile) => {
         const filePath = path.resolve(__dirname, inputFile);
         const output = await runTransform(filePath);

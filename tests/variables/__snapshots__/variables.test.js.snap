@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Variable Decorators Converts ++Increment correctly 1`] = `
+"{ name: 'count', value: { type: 'NumericLiteral', value: 2 } }
+"use strict";
+
+var count = 2;
+___captureAssignment("VariableDeclaration", "count", 1, 2);
+count += 2;
+___captureAssignment("AssignmentExpression", "count", 2, 4);"
+`;
+
+exports[`Variable Decorators Converts +=Increment correctly 1`] = `
+""use strict";
+
+var count = 1;
+___captureAssignment("VariableDeclaration", "count", 1, 2);
+count++;"
+`;
+
 exports[`Variable Decorators Converts Arrow Function correctly 1`] = `
 ""use strict";
 
@@ -42,7 +60,51 @@ ___captureAssignment("VariableDeclaration", "foo", 1, {
 });"
 `;
 
+exports[`Variable Decorators Converts Re-assignment correctly 1`] = `
+"{ name: 'count', value: { type: 'NumericLiteral', value: 3 } }
+"use strict";
+
+var count = 0;
+___captureAssignment("VariableDeclaration", "count", 1, 0);
+count = 3;
+___captureAssignment("AssignmentExpression", "count", 2, 3);"
+`;
+
 exports[`Variable Decorators Converts String correctly 1`] = `
+""use strict";
+
+var hello = "Hello World";
+___captureAssignment("VariableDeclaration", "hello", 1, "Hello World");"
+`;
+
+exports[`Variable Decorators Converts String correctly 2`] = `
+""use strict";
+
+var count = 1;
+___captureAssignment("VariableDeclaration", "count", 1, 1);"
+`;
+
+exports[`Variable Decorators Converts String correctly 3`] = `
+""use strict";
+
+var z = 54;
+___captureAssignment("VariableDeclaration", "z", 1, 54);"
+`;
+
+exports[`Variable Decorators Converts String correctly 4`] = `
+""use strict";
+
+var w = 4,
+  x = 3;
+___captureAssignment("VariableDeclaration", "x", 1, 3);
+___captureAssignment("VariableDeclaration", "w", 1, 4);
+var y,
+  z = 54;
+___captureAssignment("VariableDeclaration", "z", 2, 54);
+___captureAssignment("VariableDeclaration", "y", 2, undefined);"
+`;
+
+exports[`Variable Decorators Converts String correctly 5`] = `
 ""use strict";
 
 var hello = "Hello World";

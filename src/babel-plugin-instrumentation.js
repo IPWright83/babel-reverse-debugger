@@ -86,7 +86,7 @@ function ___captureAssignment(type, name, lineNumber, value) {
         injectors.variables.inject({ t, path, ASTType: "VariableDeclaration" });
       },
       AssignmentExpression(path) {
-        injectors.variables.inject({ t, path, ASTType: "AssignmentExpression" });
+        injectors.assignments.inject({ t, path, ASTType: "AssignmentExpression" });
       },
       // ExpressionStatement(path) {
          
