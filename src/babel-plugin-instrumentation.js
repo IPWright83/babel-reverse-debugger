@@ -7,16 +7,16 @@ module.exports = function (babel) {
 
   const code = `
 function ___instrumentFunction(type, name, lineNumber, args) { 
-   console.log(name, lineNumber, JSON.parse(JSON.stringify(args)));
+   console.log("\x1b[32m%s\x1b[0m", lineNumber + ": Function Call " + name + "(" + JSON.stringify(args) + ")");
 }
 
 function ___instrumentReturn(type, lineNumber, value) {
-  console.log(type, lineNumber, value);
+  console.log("\x1b[34m%s\x1b[0m", lineNumber + ": Returning " + value);
   return value;
 }
 
 function ___captureAssignment(type, name, lineNumber, value) {
-    console.log(lineNumber + ": " + name + " = " + value);
+    console.log("\x1b[33m%s\x1b[0m", lineNumber + ": Assignment " + name + " = " + JSON.stringify(value));
 }
 `;
 
