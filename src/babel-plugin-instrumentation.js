@@ -19,7 +19,7 @@ function ___captureVariable(type, name, lineNumber, value) {
   /**
    * Injects a call to capture a function calls arguments
    */
-  function injectCapture({t, path, name, lineNumber, parameters, ASTType}) {
+  function injectCapture({ t, path, name = "anonymous", lineNumber, parameters, ASTType }) {
     const captureStart = t.expressionStatement(
       t.callExpression(t.identifier("___instrumentFunction"), [
         t.stringLiteral(ASTType),
@@ -42,21 +42,11 @@ function ___captureVariable(type, name, lineNumber, value) {
    */
   function injectReturn({ t, path, ASTType }) {
     const name = extractName(path);
-    const { node, parent } = path;
+    const { node } = path;
     const { argument } = node;
-    const { callee } = parent;
-
-    // This prevents a double instrument occuring when an arrow function
-    // is assigned onto a class
-    //    class scientificCalculator {
-    //       cos = (degrees) => Math.cos(degress * (Math.PI / 180))
-    //    }
-    if (callee?.name === "_defineProperty" && ASTType === "ArrowFunctionExpression") {
-      return;
-    }
 
     const lineNumber = argument?.loc?.start?.line;
-    if (lineNumber === undefined || name.startsWith("___")) {
+    if (lineNumber === undefined || name && name.startsWith("___")) {
       return;
     }
 
@@ -70,13 +60,30 @@ function ___captureVariable(type, name, lineNumber, value) {
   function shouldSkipFunctionCapture(path) {
     // Our internal functions
     const name = extractName(path);
-    if (name.startsWith("___")) return true;
+    if (name && name.startsWith("___")) return true;
 
     if (path.node.loc == undefined || path.node.loc.start === undefined || path.node.loc.start.line === undefined) {
       return true;
     }
 
     return false;
+  }
+
+  /**
+   * Should we skip this particular AST node?
+   */
+  function shouldSkipReturnCapture(path) {
+    const { parent } = path;
+    const { callee } = parent;
+
+    // This prevents a double instrument occuring when an arrow function
+    // is assigned onto a class
+    //    class scientificCalculator {
+    //       cos = (degrees) => Math.cos(degress * (Math.PI / 180))
+    //    }
+    if (callee?.name === "_defineProperty") {
+      return;
+    }
   }
 
   /**
@@ -191,7 +198,9 @@ function ___captureVariable(type, name, lineNumber, value) {
        * Handle ReturnStatements such as:
        */
       ReturnStatement(path) {
-          injectReturn({ t, path, ASTType: "ReturnStatement" });
+        if (shouldSkipReturnCapture(path)) { return; }
+
+        injectReturn({ t, path, ASTType: "ReturnStatement" });
       },
       // ExpressionStatement(path) {
          
