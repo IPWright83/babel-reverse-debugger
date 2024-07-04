@@ -1,4 +1,3 @@
-const { variableDeclaration } = require("@babel/types");
 const { extractName, getLineNumber } = require("./utils");
 const injectors = require("./injectors");
 

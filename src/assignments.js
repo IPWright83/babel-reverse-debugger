@@ -19,6 +19,32 @@ function getObjectExpression(t, objExpression) {
     return t.objectExpression(properties);
 }
 
+/**
+ * Calculate a suitable display value and the actual value
+ */
+function getValues(t, node) {
+    // For more complex operators (e.g. +=) we need to evaluate the right hand side
+    // too, otherwise we won't record the overall evaluated value
+    if (node.operator !== '=') {
+        const operator = node.operator.slice(0, -1); // Extract the operator (e.g., '+' from '+=')
+        const value = t.binaryExpression(operator, node.left, node.right);
+        return { value, displayValue: value };
+    }
+
+    // Handle binary expressions such as "3 + 7"
+    const value = node.right;
+    if (value.type === 'BinaryExpression') {
+        return { value, displayValue: value };        
+    }
+
+    if (value.type === 'CallExpression') {
+        return { value, displayValue: t.stringLiteral("λ") };
+    }
+
+    const displayValue = getDisplayValue(t, value);
+    return { value, displayValue };
+}
+
 function getDisplayValue(t, assignment) {
     if (!assignment.value) {
         return t.identifier("undefined");
@@ -51,10 +77,9 @@ function inject({ t, path, ASTType }) {
     const assignment = node.right;
     const lineNumber = utils.getLineNumber(path);
 
-    // Handle variable declarations
+    // Grab the value and display value
     const name = node.left?.name ?? node.left?.property.name;
-    const displayValue = getDisplayValue(t, assignment);
-    const value = assignment ?? t.identifier("undefined")
+    const { value, displayValue } = getValues(t, node);
 
     const captureAssignment = t.expressionStatement(
         t.callExpression(t.identifier("___captureAssignment"), [

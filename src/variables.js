@@ -46,7 +46,6 @@ function inject({ t, path, ASTType }) {
     if (utils.skip(path)) { return }
 
     isDebug && console.debug("variables.inject");
-    isDebug && console.log(path.node);
 
     const { node } = path;
     const { declarations = [], init } = node; 
