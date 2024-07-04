@@ -56,7 +56,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-var scientificCalculator = /*#__PURE__*/function () {
+var scientificCalculator = ___captureAssignment("VariableDeclaration", "scientificCalculator", 1, "\\u03BB", /*#__PURE__*/function () {
   function scientificCalculator() {
     _classCallCheck(this, scientificCalculator);
   }
@@ -69,7 +69,7 @@ var scientificCalculator = /*#__PURE__*/function () {
       return ___instrumentReturn("ReturnStatement", 3, Math.sin(degrees * (Math.PI / 180)));
     }
   }]);
-}();"
+}());"
 `;
 
 exports[`Function Decorators Converts Class arrow function correctly 1`] = `
@@ -82,7 +82,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-var scientificCalculator = /*#__PURE__*/_createClass(function scientificCalculator() {
+var scientificCalculator = ___captureAssignment("VariableDeclaration", "scientificCalculator", 1, "\\u03BB", /*#__PURE__*/_createClass(function scientificCalculator() {
   _classCallCheck(this, scientificCalculator);
   _defineProperty(this, "cos", function (degrees) {
     ___instrumentFunction("ArrowFunctionExpression", "cos", 2, {
@@ -90,7 +90,7 @@ var scientificCalculator = /*#__PURE__*/_createClass(function scientificCalculat
     });
     return ___instrumentReturn("ReturnStatement", 2, Math.cos(degrees * (Math.PI / 180)));
   });
-});"
+}));"
 `;
 
 exports[`Function Decorators Converts IIFE correctly 1`] = `
@@ -114,7 +114,9 @@ new Function('return 42');"
 exports[`Function Decorators Converts Object with arrow function (explicit return) correctly 1`] = `
 ""use strict";
 
-var calculator = {
+var calculator = ___captureAssignment("VariableDeclaration", "calculator", 1, {
+  add: "\\u03BB"
+}, {
   add: function add(a, b) {
     ___instrumentFunction("ArrowFunctionExpression", "add", 2, {
       a: a,
@@ -122,16 +124,15 @@ var calculator = {
     });
     return ___instrumentReturn("ReturnStatement", 2, a + b);
   }
-};
-___captureAssignment("VariableDeclaration", "calculator", 1, {
-  add: "\\u03BB"
 });"
 `;
 
 exports[`Function Decorators Converts Object with arrow function (implicit return) correctly 1`] = `
 ""use strict";
 
-var calculator = {
+var calculator = ___captureAssignment("VariableDeclaration", "calculator", 1, {
+  multiply: "\\u03BB"
+}, {
   multiply: function multiply(a, b) {
     ___instrumentFunction("ArrowFunctionExpression", "multiply", 2, {
       a: a,
@@ -139,16 +140,16 @@ var calculator = {
     });
     return ___instrumentReturn("ReturnStatement", 2, a * b);
   }
-};
-___captureAssignment("VariableDeclaration", "calculator", 1, {
-  multiply: "\\u03BB"
 });"
 `;
 
 exports[`Function Decorators Converts Object with function (no return) correctly 1`] = `
 ""use strict";
 
-var calculator = {
+var calculator = ___captureAssignment("VariableDeclaration", "calculator", 1, {
+  clear: "\\u03BB",
+  cancel: "\\u03BB"
+}, {
   clear: function clear() {
     ___instrumentFunction("ArrowFunctionExpression", "clear", 2, {});
     return;
@@ -156,17 +157,15 @@ var calculator = {
   cancel: function cancel() {
     ___instrumentFunction("ArrowFunctionExpression", "cancel", 3, {});
   }
-};
-___captureAssignment("VariableDeclaration", "calculator", 1, {
-  clear: "\\u03BB",
-  cancel: "\\u03BB"
 });"
 `;
 
 exports[`Function Decorators Converts Object with function correctly 1`] = `
 ""use strict";
 
-var calculator = {
+var calculator = ___captureAssignment("VariableDeclaration", "calculator", 1, {
+  subtract: "\\u03BB"
+}, {
   subtract: function subtract(a, b) {
     ___instrumentFunction("FunctionExpression", "subtract", 2, {
       a: a,
@@ -174,16 +173,20 @@ var calculator = {
     });
     return ___instrumentReturn("ReturnStatement", 2, a - b);
   }
-};
-___captureAssignment("VariableDeclaration", "calculator", 1, {
-  subtract: "\\u03BB"
 });"
 `;
 
 exports[`Function Decorators Converts Object with functions correctly 1`] = `
 ""use strict";
 
-var calculator = {
+var calculator = ___captureAssignment("VariableDeclaration", "calculator", 1, {
+  add: "\\u03BB",
+  subtract: "\\u03BB",
+  multiply: "\\u03BB",
+  divide: "\\u03BB",
+  clear: "\\u03BB",
+  cancel: "\\u03BB"
+}, {
   add: function add(a, b) {
     ___instrumentFunction("ArrowFunctionExpression", "add", 2, {
       a: a,
@@ -219,13 +222,5 @@ var calculator = {
   cancel: function cancel() {
     ___instrumentFunction("ArrowFunctionExpression", "cancel", 7, {});
   }
-};
-___captureAssignment("VariableDeclaration", "calculator", 1, {
-  add: "\\u03BB",
-  subtract: "\\u03BB",
-  multiply: "\\u03BB",
-  divide: "\\u03BB",
-  clear: "\\u03BB",
-  cancel: "\\u03BB"
 });"
 `;
