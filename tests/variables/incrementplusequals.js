@@ -1,2 +1,2 @@
-let count = 1;
-count++;
+let count = 2;
+count += 3;
