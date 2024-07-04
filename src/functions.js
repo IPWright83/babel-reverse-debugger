@@ -38,7 +38,7 @@ function extractName(path) {
 
         // Force this function to be skipped as we end up with duplicate instrumentation calls
         // so we'll just use the ArrowFunctionExpression instead
-        if (node.type === "FunctionExpression" && (isInDefineProperty || isInCaptureAssignment)) {
+        if (node.type === "FunctionExpression" && (isInDefineProperty)) {
             return "___";
         }
 
