@@ -42,7 +42,7 @@ var scientificCalculator = ___captureAssignment("VariableDeclaration", "scientif
     name: name
   });
   _classCallCheck(this, scientificCalculator);
-  this.name = ___captureAssignment("AssignmentExpression", "name", 3, name, name);;
+  this.name = ___captureAssignment("AssignmentExpression", "name", 3, name, name);
 }));"
 `;
 

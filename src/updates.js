@@ -11,7 +11,7 @@ function inject({ t, path, ASTType }) {
     const lineNumber = utils.getLineNumber(path);
 
     const displayValue = t.numericLiteral(1);
-    const newValue = t.binaryExpression(
+    const newValue = operator === "=" ? argument : t.binaryExpression(
         operator === "++" ? "+" : "-",
         argument,
         displayValue
@@ -21,17 +21,17 @@ function inject({ t, path, ASTType }) {
         t.stringLiteral(ASTType),
         t.stringLiteral(name),
         t.numericLiteral(lineNumber),
-        displayValue,
+        newValue,
         newValue,
     ]);
 
     // Replace the original update expression with a compound assignment
-    const newExpression = prefix
-        ? t.assignmentExpression(operator === "++" ? "+=" : "-=", argument, captureAssignmentCall)
-        : t.sequenceExpression([
-            t.assignmentExpression(operator === "++" ? "+=" : "-=", argument, captureAssignmentCall),
-            argument,
-        ]);
+    let newExpression = null;
+    switch (operator) {
+        case "++": newExpression = t.assignmentExpression("+=", argument, captureAssignmentCall); break;
+        case "--": newExpression = t.assignmentExpression("-=", argument, captureAssignmentCall); break;
+        case "=": newExpression = t.assignmentExpression("=", argument, captureAssignmentCall); break;
+    }
 
     path.replaceWith(newExpression);
 
