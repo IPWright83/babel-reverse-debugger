@@ -33,16 +33,13 @@ function getValues(t, node) {
 
     // Handle binary expressions such as "3 + 7"
     const value = node.right;
-    if (value.type === 'BinaryExpression') {
-        return { value, displayValue: value };        
-    }
 
-    if (value.type === 'CallExpression') {
-        return { value, displayValue: t.stringLiteral("λ") };
+    switch (value.type) {
+        case "BinaryExpression": return { value, displayValue: value };     
+        case "CallExpression": return { value, displayValue: t.stringLiteral("λ") };
+        case "Identifier": return { value, displayValue: value }
+        default: return { value, displayValue: getDisplayValue(t, value) } 
     }
-
-    const displayValue = getDisplayValue(t, value);
-    return { value, displayValue };
 }
 
 function getDisplayValue(t, assignment) {

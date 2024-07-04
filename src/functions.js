@@ -32,16 +32,17 @@ function extractName(path) {
     //    class scientificCalculator {
     //       cos = (degrees) => Math.cos(degress * (Math.PI / 180))
     //    }
-    if (!name && ["ArrowFunctionExpression", "FunctionExpression"].includes(node.type)) {
+    if (["ArrowFunctionExpression", "FunctionExpression"].includes(node.type)) {
         const isInDefineProperty = parent.type === "CallExpression" && parent.callee?.name === "_defineProperty";
+        const isInCaptureAssignment = parent.type === "CallExpression" && parent.callee?.name === "___captureAssignment";
 
         // Force this function to be skipped as we end up with duplicate instrumentation calls
         // so we'll just use the ArrowFunctionExpression instead
-        if (node.type === "FunctionExpression" && isInDefineProperty) {
+        if (node.type === "FunctionExpression" && (isInDefineProperty || isInCaptureAssignment)) {
             return "___";
         }
 
-        if (node.type === "ArrowFunctionExpression" && isInDefineProperty) {
+        if (node.type === "ArrowFunctionExpression" && (isInDefineProperty || isInCaptureAssignment)) {
             return parent.arguments?.[1]?.value;
         }
     }
@@ -59,14 +60,14 @@ function inject({ t, path, ASTType }) {
     isDebug && console.debug("functions.inject");
 
     const lineNumber = utils.getLineNumber(path);
-    const parameters = path.node.params.map((p) =>
+    const parameters = path.node.params.map(p =>
         t.objectProperty(t.identifier(p.name), t.identifier(p.name))
     );
 
     const captureStart = t.expressionStatement(
         t.callExpression(t.identifier("___instrumentFunction"), [
             t.stringLiteral(ASTType),
-            t.stringLiteral(name ?? "anonymous"),
+            t.stringLiteral(name || "anonymous"), // Use extracted name or default to "anonymous"
             t.numericLiteral(lineNumber),
             t.objectExpression(parameters)
         ])

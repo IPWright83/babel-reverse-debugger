@@ -3,14 +3,13 @@
 exports[`Function Decorators Converts Arrow function correctly 1`] = `
 ""use strict";
 
-var subtract = function subtract(a, b) {
+var subtract = ___captureAssignment("VariableDeclaration", "subtract", 1, "\\u03BB", function (a, b) {
   ___instrumentFunction("ArrowFunctionExpression", "subtract", 1, {
     a: a,
     b: b
   });
   return ___instrumentReturn("ReturnStatement", 1, a - b);
-};
-___captureAssignment("VariableDeclaration", "subtract", 1, "\\u03BB");"
+});"
 `;
 
 exports[`Function Decorators Converts Basic function correctly 1`] = `
@@ -38,13 +37,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-var scientificCalculator = /*#__PURE__*/_createClass(function scientificCalculator(name) {
+var scientificCalculator = ___captureAssignment("VariableDeclaration", "scientificCalculator", 1, "\\u03BB", /*#__PURE__*/_createClass(function scientificCalculator(name) {
   ___instrumentFunction("FunctionExpression", "scientificCalculator", 2, {
     name: name
   });
   _classCallCheck(this, scientificCalculator);
-  this.name = name;
-});"
+  this.name = ___captureAssignment("AssignmentExpression", "name", 3, name, name);;
+}));"
 `;
 
 exports[`Function Decorators Converts Class Function correctly 1`] = `
