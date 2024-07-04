@@ -15,7 +15,7 @@ function ___instrumentReturn(type, lineNumber, value) {
 }
 
 function ___captureAssignment(type, name, lineNumber, displayValue, value) {
-    console.log("\x1b[33m%s\x1b[0m", lineNumber + ": Assignment " + name + " = " + JSON.stringify(displayValue));
+    console.log("\x1b[33m%s\x1b[0m", lineNumber + ": Assignment " + name + " = " + JSON.stringify(value));
     return value;
 }
 `;

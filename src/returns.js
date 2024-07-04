@@ -17,7 +17,7 @@ function skip(name, path) {
         return true;
     }
 
-    if (path.parentPath.container?.id?.name === "___instrumentReturn") {
+    if (path.parentPath.container?.id?.name.startsWith("___")) {
         return true;
     }
 

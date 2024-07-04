@@ -39,6 +39,7 @@ describe("Variable Decorators", () => {
         ["Assign to built in function result", "assign-to-builtin-result.js"],
         ['Mixed assignment', "mixed-assignment.js"],
         ["Chained assignment", "chained-assignment.js"],
+        ["Loop", "loop.js"],
     ])("Converts %s correctly", async (name, inputFile) => {
         const filePath = path.resolve(__dirname, inputFile);
         const output = await runTransform(filePath);

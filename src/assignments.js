@@ -78,17 +78,19 @@ function inject({ t, path, ASTType }) {
     const name = node.left?.name ?? node.left?.property.name;
     const { value, displayValue } = getValues(t, node);
 
-    const captureAssignment = t.expressionStatement(
-        t.callExpression(t.identifier("___captureAssignment"), [
-            t.stringLiteral(ASTType),
-            t.stringLiteral(name),
-            t.numericLiteral(lineNumber),
-            displayValue,
-            value
-        ])
-    );
+    const captureAssignment = t.callExpression(t.identifier("___captureAssignment"), [
+        t.stringLiteral(ASTType),
+        t.stringLiteral(name),
+        t.numericLiteral(lineNumber),
+        displayValue,
+        value
+    ])
 
-    node.right = captureAssignment;
+    path.replaceWith(
+        t.expressionStatement(
+            t.assignmentExpression(node.operator, node.left, captureAssignment)
+        )
+    );
 
     // Mark this node as processed to avoid re-processing
     path.node.__processed = true;
