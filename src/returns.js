@@ -49,6 +49,9 @@ function inject({ t, path, ASTType }) {
 
     const captureReturn = t.callExpression(t.identifier("___instrumentReturn"), [t.stringLiteral(ASTType), t.numericLiteral(lineNumber), argument]);
     path.node.argument = captureReturn;
+
+    // Mark this node as processed to avoid re-processing
+    path.node.__processed = true;
 }
 
 module.exports = {

@@ -34,6 +34,9 @@ function inject({ t, path, ASTType }) {
         ]);
 
     path.replaceWith(newExpression);
+
+    // Mark this node as processed to avoid re-processing
+    path.node.__processed = true;
 }
 
 module.exports = {
