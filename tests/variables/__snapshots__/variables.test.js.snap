@@ -4,7 +4,7 @@ exports[`Variable Decorators Converts Arrow Function correctly 1`] = `
 ""use strict";
 
 var hello = ___captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB", function () {
-  ___instrumentFunction("ArrowFunctionExpression", "anonymous", 1, {});
+  ___instrumentFunction("ArrowFunctionExpression", "hello", 1, {});
   return ___instrumentReturn("ReturnStatement", 1, "Hello World");
 });"
 `;
@@ -27,7 +27,7 @@ exports[`Variable Decorators Converts Assign to function result correctly 1`] = 
 ""use strict";
 
 var sum = ___captureAssignment("VariableDeclaration", "sum", 1, "\\u03BB", function (a, b) {
-  ___instrumentFunction("ArrowFunctionExpression", "anonymous", 1, {
+  ___instrumentFunction("ArrowFunctionExpression", "sum", 1, {
     a: a,
     b: b
   });
@@ -64,13 +64,6 @@ var hello = ___captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB", f
 });"
 `;
 
-exports[`Variable Decorators Converts Increment++ correctly 1`] = `
-""use strict";
-
-var count = ___captureAssignment("VariableDeclaration", "count", 1, 2, 2);;
-count += ___captureAssignment("AssignmentExpression", "count", 2, 3, 3);;"
-`;
-
 exports[`Variable Decorators Converts Increment+= correctly 1`] = `
 ""use strict";
 
@@ -82,7 +75,7 @@ exports[`Variable Decorators Converts Mixed assignment correctly 1`] = `
 ""use strict";
 
 var sum = ___captureAssignment("VariableDeclaration", "sum", 1, "\\u03BB", function (a, b) {
-  ___instrumentFunction("ArrowFunctionExpression", "anonymous", 1, {
+  ___instrumentFunction("ArrowFunctionExpression", "sum", 1, {
     a: a,
     b: b
   });
@@ -110,6 +103,15 @@ exports[`Variable Decorators Converts Re-assignment correctly 1`] = `
 
 var count = ___captureAssignment("VariableDeclaration", "count", 1, 0, 0);
 count = ___captureAssignment("AssignmentExpression", "count", 2, 3, 3);;"
+`;
+
+exports[`Variable Decorators Converts Shorthand Operations correctly 1`] = `
+""use strict";
+
+var count = ___captureAssignment("VariableDeclaration", "count", 1, 1, 1);
+count += ___captureAssignment("UpdateExpression", "count", 2, 1, count + 1), count;
+count -= ___captureAssignment("UpdateExpression", "count", 3, 1, count - 1), count;
+count *= ___captureAssignment("AssignmentExpression", "count", 4, count * 2, count * 2);;"
 `;
 
 exports[`Variable Decorators Converts String correctly 1`] = `

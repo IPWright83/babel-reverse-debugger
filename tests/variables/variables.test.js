@@ -31,7 +31,7 @@ describe("Variable Decorators", () => {
         ["Arrow Function", "arrow-assignment.js"],
         ["Object", "object-assignment.js"],
         ["Re-assignment", "re-assignment.js"],
-        ["Increment++", "incrementplusplus.js"],
+        ["Shorthand Operations", "shorthand-operations.js"],
         ["Increment+=", "incrementplusequals.js"],
         ["Assign to Undefined", "assign-to-undefined.js"],
         ["Assign to operation", "assign-to-operation.js"],

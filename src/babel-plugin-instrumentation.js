@@ -88,9 +88,9 @@ function ___captureAssignment(type, name, lineNumber, displayValue, value) {
       AssignmentExpression(path) {
         injectors.assignments.inject({ t, path, ASTType: "AssignmentExpression" });
       },
-      // ExpressionStatement(path) {
-         
-      // },
+      UpdateExpression(path) {
+        injectors.updates.inject({ t, path, ASTType: "UpdateExpression" });
+      }
     }
   };
 }
