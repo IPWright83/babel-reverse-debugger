@@ -47,8 +47,6 @@ function inject({ t, path, ASTType }) {
         return true;
     }
 
-    // console.log(name);
-
     const captureReturn = t.callExpression(t.identifier("___instrumentReturn"), [t.stringLiteral(ASTType), t.numericLiteral(lineNumber), argument]);
     path.node.argument = captureReturn;
 }

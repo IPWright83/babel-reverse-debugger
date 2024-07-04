@@ -12,14 +12,14 @@ function getObjectExpression(t, objExpression) {
         } else {
             return t.objectProperty(
                 prop.key,
-                getValue(t, { init: prop.value })
+                getDisplayValue(t, { init: prop.value })
             );
         }
     });
     return t.objectExpression(properties);
 }
 
-function getValue(t, assignment) {
+function getDisplayValue(t, assignment) {
     if (!assignment.value) {
         return t.identifier("undefined");
     }
@@ -48,24 +48,28 @@ function inject({ t, path, ASTType }) {
     isDebug && console.debug("assignments.inject");
 
     const { node } = path;
+    const assignment = node.right;
     const lineNumber = utils.getLineNumber(path);
 
     // Handle variable declarations
     const name = node.left?.name ?? node.left?.property.name;
-    const value = getValue(t, node.right);
+    const displayValue = getDisplayValue(t, assignment);
+    const value = assignment ?? t.identifier("undefined")
 
-    console.log({ name, value });
-    debugger;
     const captureAssignment = t.expressionStatement(
         t.callExpression(t.identifier("___captureAssignment"), [
             t.stringLiteral(ASTType),
             t.stringLiteral(name),
             t.numericLiteral(lineNumber),
+            displayValue,
             value
         ])
     );
 
-    path.insertAfter(captureAssignment);
+    node.right = captureAssignment;
+
+    // Mark this node as processed to avoid re-processing
+    path.node.__processed = true;
 }
 
 module.exports = {

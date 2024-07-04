@@ -12,14 +12,14 @@ function getObjectExpression(t, objExpression) {
         } else {
             return t.objectProperty(
                 prop.key,
-                getValue(t, { init: prop.value })
+                getDisplayValue(t, { init: prop.value })
             );
         }
     });
     return t.objectExpression(properties);
 }
 
-function getValue(t, declaration) {
+function getDisplayValue(t, declaration) {
     if (!declaration.init) {
         return t.identifier("undefined");
     }
@@ -54,20 +54,26 @@ function inject({ t, path, ASTType }) {
 
     declarations.forEach(declaration => {
         const name = declaration.id?.name;
-        const value = getValue(t, declaration);
+        const displayValue = getDisplayValue(t, declaration);
+        const value = declaration.init ?? t.identifier("undefined");
 
-        // console.log(ASTType, name, lineNumber, value);
-        const captureAssignment = t.expressionStatement(
-            t.callExpression(t.identifier("___captureAssignment"), [
-                t.stringLiteral(ASTType),
-                t.stringLiteral(name),
-                t.numericLiteral(lineNumber),
-                value
-            ])
-        );
+        const captureAssignmentCall = t.callExpression(t.identifier("___captureAssignment"), [
+            t.stringLiteral(ASTType),
+            t.stringLiteral(name),
+            t.numericLiteral(lineNumber),
+            displayValue,
+            value,
+        ]);
 
-        path.insertAfter(captureAssignment);
+        declaration.init = captureAssignmentCall;
     })
+
+    path.replaceWith(
+        t.variableDeclaration(node.kind, declarations)
+    );
+
+    // Mark this node as processed to avoid re-processing
+    path.node.__processed = true;
 }
 
 module.exports = {
