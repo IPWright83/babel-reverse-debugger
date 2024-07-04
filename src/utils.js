@@ -15,7 +15,22 @@ function getLineNumber(path) {
   return path.node.loc?.start?.line ?? path.parent.loc?.start?.line;
 }
 
+function skip(path) { 
+  const lineNumber = getLineNumber(path);
+  if (lineNumber === undefined) {
+    return true;
+  }
+
+  // Skip nodes that have already been processed
+  if (path.node.__processed) {
+    return true;
+  }
+
+  return false;
+}
+
 module.exports = {
   extractName, 
   getLineNumber,
+  skip,
 }

@@ -1,4 +1,20 @@
+const isDebug = require("./isDebug");
 const utils = require("./utils");
+
+/**
+ * Should we skip this particular AST node?
+ */
+function skip(name, path) {
+    // Our internal functions
+    if (name && name.startsWith("___")) return true;
+
+    // Code that we don't have any line numbers for
+    if (path.node.loc == undefined || path.node.loc.start === undefined || path.node.loc.start.line === undefined) {
+        return true;
+    }
+
+    return false;
+}
 
 /**
   * Attempt to extract the name in a safe way that doesn't use null coalescing
@@ -40,6 +56,8 @@ function inject({ t, path, ASTType }) {
         return;
     }
 
+    isDebug && console.debug("functions.inject");
+
     const lineNumber = utils.getLineNumber(path);
     const parameters = path.node.params.map((p) =>
         t.objectProperty(t.identifier(p.name), t.identifier(p.name))
@@ -60,21 +78,9 @@ function inject({ t, path, ASTType }) {
         const body = t.blockStatement([captureStart, t.returnStatement(path.node.body)]);
         path.get('body').replaceWith(body);
     }
-}
 
-/**
- * Should we skip this particular AST node?
- */
-function skip(name, path) {
-    // Our internal functions
-    if (name && name.startsWith("___")) return true;
-
-    // Code that we don't have any line numbers for
-    if (path.node.loc == undefined || path.node.loc.start === undefined || path.node.loc.start.line === undefined) {
-        return true;
-    }
-
-    return false;
+    // Mark this node as processed to avoid re-processing
+    path.node.__processed = true;
 }
 
 module.exports = {

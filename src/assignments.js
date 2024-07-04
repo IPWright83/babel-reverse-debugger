@@ -1,16 +1,5 @@
+const isDebug = require("./isDebug");
 const utils = require("./utils");
-
-/**
-  * Should we skip this particular AST node?
-  */
-function skip(path) { 
-    const lineNumber = utils.getLineNumber(path);
-    if (lineNumber === undefined) {
-        return true;
-    }
-
-    return false;
-}
 
 function getObjectExpression(t, objExpression) {
     const properties = objExpression.properties.map(prop => {
@@ -54,7 +43,9 @@ function getValue(t, assignment) {
   * Injects the recording of a value return from a function
   */
 function inject({ t, path, ASTType }) {
-    if (skip(path)) { return }
+    if (utils.skip(path)) { return }
+
+    isDebug && console.debug("assignments.inject");
 
     const { node } = path;
     const lineNumber = utils.getLineNumber(path);
@@ -78,6 +69,6 @@ function inject({ t, path, ASTType }) {
 }
 
 module.exports = {
-    skip,
+    skip: utils.skip,
     inject,
 }

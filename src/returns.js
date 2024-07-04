@@ -1,4 +1,5 @@
 const utils = require("./utils");
+const isDebug = require("./isDebug");
 
 /**
   * Should we skip this particular AST node?
@@ -29,7 +30,9 @@ function skip(name, path) {
 function inject({ t, path, ASTType }) {
     const name = utils.extractName(path);
     if (skip(name, path)) { return }
-        
+
+    isDebug && console.debug("returns.inject");
+
     const { node } = path;
     const { argument } = node;
 
