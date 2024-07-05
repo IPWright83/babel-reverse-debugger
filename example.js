@@ -1,4 +1,4 @@
-function myExampleProgram() {
+function myExampleProgram(testName) {
     const max = (a, b) => {
         if (a < b) { return a; }
         if (b < a) { return b; }
@@ -15,5 +15,5 @@ function myExampleProgram() {
 }
 
 const hello = "Hello World";
-const result = myExampleProgram();
+const result = myExampleProgram("Example");
 console.log(result);

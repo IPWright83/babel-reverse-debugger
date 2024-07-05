@@ -1,4 +1,5 @@
 const getLineNumber = require("./getLineNumber");
+const extractName = require("./extractName");
 
 /**
  * Determines if we should skip processing the current AST node

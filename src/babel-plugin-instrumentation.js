@@ -1,27 +1,16 @@
+const { identifier } = require("@babel/types");
 const visitors = require("./visitors");
+const fs = require("fs");
+const path = require('path');
 
 module.exports = function (babel) {
   const { types: t, parse } = babel;
-
-  const code = `
-function ___instrumentFunction(type, name, lineNumber, args) { 
-   console.log("\x1b[32m%s\x1b[0m", lineNumber + ": Function Call " + name + "(" + JSON.stringify(args) + ")");
-}
-
-function ___instrumentReturn(type, lineNumber, value) {
-  console.log("\x1b[34m%s\x1b[0m", lineNumber + ": Returning " + value);
-  return value;
-}
-
-function ___captureAssignment(type, name, lineNumber, displayValue, value) {
-    console.log("\x1b[33m%s\x1b[0m", lineNumber + ": Assignment " + name + " = " + JSON.stringify(displayValue));
-    return value;
-}
-`;
-
+  const instrumentationPath = path.join(__dirname, 'instrumentation.js');
+  const code = fs.readFileSync(instrumentationPath, "utf8");
+  
   return {
     visitor: {
-      Program(path) {
+      Program(path, state, a, b, c) {
         // Don't inject our functions in tests
         if (process.env && process.env.NODE_ENV === 'test') {
           return;
@@ -32,62 +21,53 @@ function ___captureAssignment(type, name, lineNumber, displayValue, value) {
         // functions later on
         path.unshiftContainer("body", parse(code).program.body);
       },
+      Identifier(path) {
+        if (path.node.name?.startsWith("_")) {
+          path.skip();
+        }
+      },
       /**
        * Handle FunctionDeclarations such as:
        *     function add(a, b) {
        *         return a + b;
        *     }
        */
-      FunctionDeclaration(path) {
+      Function(path) {
+        if (path.node.id?.name?.startsWith("_")) {
+          path.skip();
+        }
+
         visitors.FunctionDeclaration({ t, path, ASTType: "FunctionDeclaration" });
-      },
-      /**
-       * Handle FunctionExpressions such as:
-       *     const calculator = {
-       *        sum: function(a, b) {
-       *           return a + b;
-       *        }
-       *     } 
-       */
-      FunctionExpression(path) {
-        visitors.FunctionDeclaration({ t, path, ASTType: "FunctionExpression" });
-      },
-      /**
-       * Handle ArrowFunctionExpressions such as:
-       *     const calculator = {
-       *        sum: (a, b) => a + b;
-       *     } 
-       *
-       *     const sum = (a, b) => a + b;
-       */
-      ArrowFunctionExpression(path) {
-        visitors.FunctionDeclaration({ t, path, ASTType: "ArrowFunctionExpression" });
-      },
-      /**
-       * Handle ClassMethods such as:
-       *    class ScientificCalculator {
-       *        constructor() {}            // This will be handled
-       *        sin(degrees) {}             // This will also be handled
-       *    }
-       */
-      ClassMethod(path) {
-        visitors.FunctionDeclaration({ t, path, ASTType: "ClassMethod" });
       },
       /**
        * Handle ReturnStatements such as:
        *   return "Hello World!";
        */
       ReturnStatement(path) {
+        if (path.node.name?.startsWith("_")) {
+          path.skip();
+        }
         visitors.ReturnStatement({ t, path, ASTType: "ReturnStatement" });
       },
 
       VariableDeclaration(path) {
+        if (path.node.name?.startsWith("_")) {
+          path.skip();
+        }
         visitors.VariableDeclaration({ t, path, ASTType: "VariableDeclaration" });
       },
       AssignmentExpression(path) {
+        if (path.node.name?.startsWith("_")) {
+          path.skip();
+        }
+
         visitors.AssignmentExpression({ t, path, ASTType: "AssignmentExpression" });
       },
       UpdateExpression(path) {
+        if (path.node.name?.startsWith("_")) {
+          path.skip();
+        }
+
         visitors.UpdateExpression({ t, path, ASTType: "UpdateExpression" });
       }
     }
