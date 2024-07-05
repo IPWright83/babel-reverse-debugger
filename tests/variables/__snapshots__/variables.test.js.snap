@@ -74,7 +74,7 @@ count += ___captureAssignment("AssignmentExpression", "count", 2, count + 3, cou
 exports[`Variable Decorators Converts Loop correctly 1`] = `
 ""use strict";
 
-for (var i = ___captureAssignment("VariableDeclaration", "i", 1, 0, 0); i < 4; i += ___captureAssignment("UpdateExpression", "i", 1, i + 1, i + 1)) {
+for (var i = ___captureAssignment("VariableDeclaration", "i", 1, 0, 0); i < 4; i += ___captureAssignment("UpdateExpression", "i", 1, i + 1, 1)) {
   console.log(i);
 }"
 `;
@@ -117,8 +117,8 @@ exports[`Variable Decorators Converts Shorthand Operations correctly 1`] = `
 ""use strict";
 
 var count = ___captureAssignment("VariableDeclaration", "count", 1, 1, 1);
-count += ___captureAssignment("UpdateExpression", "count", 2, count + 1, count + 1);
-count -= ___captureAssignment("UpdateExpression", "count", 3, count - 1, count - 1);
+count += ___captureAssignment("UpdateExpression", "count", 2, count + 1, 1);
+count -= ___captureAssignment("UpdateExpression", "count", 3, count - 1, 1);
 count *= ___captureAssignment("AssignmentExpression", "count", 4, count * 2, count * 2);"
 `;
 
