@@ -1,4 +1,3 @@
-const isDebug = require("./isDebug");
 const utils = require("./utils");
 
 /**
@@ -53,11 +52,9 @@ function extractName(path) {
  */
 function inject({ t, path, ASTType }) {
     const name = extractName(path);
-    if (skip(name, path)) {
-        return;
-    }
+    if (skip(name, path)) { return; }
 
-    isDebug && console.debug("functions.inject");
+    utils.isDebug && console.debug("functions.inject");
 
     const lineNumber = utils.getLineNumber(path);
     const parameters = path.node.params.map(p =>
@@ -85,6 +82,5 @@ function inject({ t, path, ASTType }) {
 }
 
 module.exports = {
-    skip,
     inject,
 }

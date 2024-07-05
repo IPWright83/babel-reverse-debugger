@@ -1,5 +1,4 @@
-const { extractName, getLineNumber } = require("./utils");
-const injectors = require("./injectors");
+const visitors = require("./visitors");
 
 module.exports = function (babel) {
   const { types: t, parse } = babel;
@@ -40,7 +39,7 @@ function ___captureAssignment(type, name, lineNumber, displayValue, value) {
        *     }
        */
       FunctionDeclaration(path) {
-        injectors.functions.inject({ t, path, ASTType: "FunctionDeclaration" });
+        visitors.FunctionDeclaration({ t, path, ASTType: "FunctionDeclaration" });
       },
       /**
        * Handle FunctionExpressions such as:
@@ -51,7 +50,7 @@ function ___captureAssignment(type, name, lineNumber, displayValue, value) {
        *     } 
        */
       FunctionExpression(path) {
-        injectors.functions.inject({ t, path, ASTType: "FunctionExpression" });
+        visitors.FunctionDeclaration({ t, path, ASTType: "FunctionExpression" });
       },
       /**
        * Handle ArrowFunctionExpressions such as:
@@ -62,7 +61,7 @@ function ___captureAssignment(type, name, lineNumber, displayValue, value) {
        *     const sum = (a, b) => a + b;
        */
       ArrowFunctionExpression(path) {
-        injectors.functions.inject({ t, path, ASTType: "ArrowFunctionExpression" });
+        visitors.FunctionDeclaration({ t, path, ASTType: "ArrowFunctionExpression" });
       },
       /**
        * Handle ClassMethods such as:
@@ -72,24 +71,24 @@ function ___captureAssignment(type, name, lineNumber, displayValue, value) {
        *    }
        */
       ClassMethod(path) {
-        injectors.functions.inject({ t, path, ASTType: "ClassMethod" });
+        visitors.FunctionDeclaration({ t, path, ASTType: "ClassMethod" });
       },
       /**
        * Handle ReturnStatements such as:
        *   return "Hello World!";
        */
       ReturnStatement(path) {
-        injectors.returns.inject({ t, path, ASTType: "ReturnStatement" });
+        visitors.ReturnStatement({ t, path, ASTType: "ReturnStatement" });
       },
 
       VariableDeclaration(path) {
-        injectors.variables.inject({ t, path, ASTType: "VariableDeclaration" });
+        visitors.VariableDeclaration({ t, path, ASTType: "VariableDeclaration" });
       },
       AssignmentExpression(path) {
-        injectors.assignments.inject({ t, path, ASTType: "AssignmentExpression" });
+        visitors.AssignmentExpression({ t, path, ASTType: "AssignmentExpression" });
       },
       UpdateExpression(path) {
-        injectors.updates.inject({ t, path, ASTType: "UpdateExpression" });
+        visitors.UpdateExpression({ t, path, ASTType: "UpdateExpression" });
       }
     }
   };

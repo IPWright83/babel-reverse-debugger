@@ -1,23 +1,4 @@
-const isDebug = require("./isDebug");
 const utils = require("./utils");
-
-function getObjectExpression(t, objExpression) {
-    const properties = objExpression.properties.map(prop => {
-        if (prop.value.type === "ObjectExpression") {
-            // If the property value is an object expression, recursively handle it
-            return t.objectProperty(
-                prop.key,
-                getObjectExpression(t, prop.value)
-            );
-        } else {
-            return t.objectProperty(
-                prop.key,
-                getDisplayValue(t, { init: prop.value })
-            );
-        }
-    });
-    return t.objectExpression(properties);
-}
 
 /**
  * Calculate a suitable display value and the actual value
@@ -38,27 +19,7 @@ function getValues(t, node) {
         case "BinaryExpression": return { value, displayValue: value };     
         case "CallExpression": return { value, displayValue: t.stringLiteral("λ") };
         case "Identifier": return { value, displayValue: value }
-        default: return { value, displayValue: getDisplayValue(t, value) } 
-    }
-}
-
-function getDisplayValue(t, assignment) {
-    if (!assignment.value) {
-        return t.identifier("undefined");
-    }
-
-    switch (assignment.type) {
-        case "NumericLiteral":
-            return t.numericLiteral(assignment.value);
-        case "StringLiteral":
-            return t.stringLiteral(assignment.value);
-        case "BooleanLiteral":
-            return t.booleanLiteral(assignment.value);
-        case "ObjectExpression":
-            return getObjectExpression(t, assignment);
-        default: {
-            return t.stringLiteral("λ");
-        }
+        default: return { value, displayValue: utils.getDisplayValue(t, value) } 
     }
 }
 
@@ -68,7 +29,7 @@ function getDisplayValue(t, assignment) {
 function inject({ t, path, ASTType }) {
     if (utils.skip(path)) { return }
 
-    isDebug && console.debug("assignments.inject");
+    utils.isDebug && console.debug("assignments.inject");
 
     const { node } = path;
     const assignment = node.right;
@@ -97,6 +58,5 @@ function inject({ t, path, ASTType }) {
 }
 
 module.exports = {
-    skip: utils.skip,
     inject,
 }

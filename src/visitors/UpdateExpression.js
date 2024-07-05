@@ -1,10 +1,9 @@
-const isDebug = require("./isDebug");
 const utils = require("./utils");
 
 function inject({ t, path, ASTType }) {
     if (utils.skip(path)) { return }
 
-    isDebug && console.debug("updates.inject");
+    utils.isDebug && console.debug("updates.inject");
 
     const { operator, argument, prefix } = path.node;
     const name = utils.extractName(path) ?? argument.name;
@@ -40,6 +39,5 @@ function inject({ t, path, ASTType }) {
 }
 
 module.exports = {
-    skip: utils.skip,
     inject,
 }
