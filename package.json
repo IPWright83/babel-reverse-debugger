@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:lib": "babel src -d lib -x \".ts\"",
+    "build:types": "tsc --emitDeclarationOnly",
+    "check-types": "tsc --noEmit",
+    "run": "npx babel add.js --out-file out/add.js --quiet --config-file ./.babelrc-test",
     "build": "npx babel add.js --out-file out/add.js --quiet --config-file ./.babelrc-test",
     "debug": "export PLUGIN_DEBUG=1 && npx --node-options=--inspect-brk babel add.js --out-file out/add.js --quiet --config-file ./.babelrc-test",
     "start": "npm run build && node ./out/add.js --config-file ./.babelrc-test",
@@ -17,9 +21,11 @@
     "@babel/preset-env": "^7.24.5"
   },
   "devDependencies": {
-    "@babel/types": "^7.24.5",
+    "@babel/preset-typescript": "^7.24.7",
+    "@babel/types": "^7.24.7",
     "@types/node": "^20.12.12",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "typescript": "^5.5.3"
   },
   "jest": {
     "transformIgnorePatterns": [
