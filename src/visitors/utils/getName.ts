@@ -5,7 +5,7 @@ import { NodePath } from "@babel/core";
  * @param  {} path       The path to the current node
  * @return {string|undefined}      The name of the node
  */
-export function getName(path: NodePath): string | undefined {
+export default function getName(path: NodePath): string | undefined {
   const { node, parent } = path;
 
   return node.id?.name ??
