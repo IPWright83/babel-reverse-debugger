@@ -19,10 +19,10 @@ function skip(name, path) {
   * Attempt to extract the name in a safe way that doesn't use null coalescing
   * as this isn't supported by https://astexplorer.net/
   */
-function extractName(path) {
+function getName(path) {
     const { node, parent } = path;
 
-    const name = utils.extractName(path);
+    const name = utils.getName(path);
     if (name) {
         return name;
     }
@@ -51,18 +51,16 @@ function extractName(path) {
  * Injects a call to capture a function calls arguments
  */
 function inject({ t, path, ASTType }) {
-    const name = extractName(path);
-    if (skip(name, path)) { return; }
-
     utils.isDebug && console.debug("functions.inject");
 
+    const name = getName(path);
     const lineNumber = utils.getLineNumber(path);
     const parameters = path.node.params.map(p =>
         t.objectProperty(t.identifier(p.name), t.identifier(p.name))
     );
 
     const captureStart = t.expressionStatement(
-        t.callExpression(t.identifier("___instrumentFunction"), [
+        t.callExpression(t.identifier("_instrumentFunction"), [
             t.stringLiteral(ASTType),
             t.stringLiteral(name || "anonymous"), // Use extracted name or default to "anonymous"
             t.numericLiteral(lineNumber),
@@ -82,5 +80,7 @@ function inject({ t, path, ASTType }) {
 }
 
 module.exports = {
+    skip,
+    getName,
     inject,
 }

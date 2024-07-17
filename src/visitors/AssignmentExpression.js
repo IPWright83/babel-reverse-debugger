@@ -1,5 +1,11 @@
 const utils = require("./utils");
 
+function getName(path) {
+    const { node } = path;
+    const name = node.left?.name ?? node.left?.property.name;
+    return name;
+}
+
 /**
  * Calculate a suitable display value and the actual value
  */
@@ -27,8 +33,7 @@ function getValues(t, node) {
   * Injects the recording of a value return from a function
   */
 function inject({ t, path, ASTType }) {
-    if (utils.skip(path)) { return }
-
+    debugger;
     utils.isDebug && console.debug("assignments.inject");
 
     const { node } = path;
@@ -36,10 +41,10 @@ function inject({ t, path, ASTType }) {
     const lineNumber = utils.getLineNumber(path);
 
     // Grab the value and display value
-    const name = node.left?.name ?? node.left?.property.name;
+    const name = getName(path);
     const { value, displayValue } = getValues(t, node);
 
-    const captureAssignment = t.callExpression(t.identifier("___captureAssignment"), [
+    const captureAssignment = t.callExpression(t.identifier("_captureAssignment"), [
         t.stringLiteral(ASTType),
         t.stringLiteral(name),
         t.numericLiteral(lineNumber),
@@ -59,4 +64,6 @@ function inject({ t, path, ASTType }) {
 
 module.exports = {
     inject,
+    getName,
+    skip: utils.skip,
 }

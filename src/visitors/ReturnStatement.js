@@ -27,11 +27,9 @@ function skip(name, path) {
   * Injects the recording of a value return from a function
   */
 function inject({ t, path, ASTType }) {
-    const name = utils.extractName(path);
-    if (skip(name, path)) { return }
-
     utils.isDebug && console.debug("returns.inject");
 
+    const name = utils.getName(path);
     const { node } = path;
     const { argument } = node;
 
@@ -42,11 +40,11 @@ function inject({ t, path, ASTType }) {
 
     // Check if the argument is a call expression to ___instrumentReturn
     // This prevents infinite recursion
-    if (t.isCallExpression(argument) && t.isIdentifier(argument.callee) && argument.callee.name === "___instrumentReturn") {
+    if (t.isCallExpression(argument) && t.isIdentifier(argument.callee) && argument.callee.name === "_instrumentReturn") {
         return true;
     }
 
-    const captureReturn = t.callExpression(t.identifier("___instrumentReturn"), [t.stringLiteral(ASTType), t.numericLiteral(lineNumber), argument]);
+    const captureReturn = t.callExpression(t.identifier("_instrumentReturn"), [t.stringLiteral(ASTType), t.numericLiteral(lineNumber), argument]);
     path.node.argument = captureReturn;
 
     // Mark this node as processed to avoid re-processing
@@ -54,5 +52,7 @@ function inject({ t, path, ASTType }) {
 }
 
 module.exports = {
+    skip,
+    getName: utils.getName,
     inject,
 }

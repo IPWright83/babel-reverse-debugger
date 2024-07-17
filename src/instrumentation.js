@@ -1,38 +1,16 @@
-let ___currentNode = new ___ProgramNode();
-
-function ___instrumentFunction(nodeType, name, lineNumber, args) { 
-  ___currentNode = ___currentNode.add(new FunctionCallNode(nodeType, name, lineNumber, args));
+function _instrumentFunction(nodeType, name, lineNumber, args) { 
+  _currentNode = _currentNode.add(new _FunctionCallStatement(nodeType, name, lineNumber, args));
 }
 
-function ___instrumentReturn(nodeType, lineNumber, value) {
-  ___currentNode = ___currentNode.add(new ReturnNode(nodeType, lineNumber, value));
+function _instrumentReturn(nodeType, lineNumber, value) {
+  _currentNode = _currentNode.add(new _ReturnValueStatement(nodeType, lineNumber, value));
 }
 
-function ___captureAssignment(nodeType, name, lineNumber, displayValue, value) {
-  ___currentNode = ___currentNode.add(new AssignmentNode(nodeType, name, lineNumber, displayValue, value));
+function _captureAssignment(nodeType, name, lineNumber, displayValue, value) {
+  _currentNode = _currentNode.add(new _AssignmentStatement(nodeType, name, lineNumber, displayValue, value));
 }
 
-// /**
-//   * Construct a new Node
-//   * @param  {string} nodeType   The AST node type
-//   * @param  {number} lineNumber The line number that this node corresponds to
-//   * @param  {number} depth      The depth in the callstack
-//   */
-// function ___Node(nodeType, lineNumber) { 
-//   return {
-//     next: undefined,
-//     prev: undefined,
-//     isDebug: process.env.PLUGIN_DEBUG === '1',
-//     depth: 0,
-
-//     // This is used to allow stepping backwards into
-//     // a function call from a return statement
-//     branch_rewind: undefined, 
-//   }
-// }
-
-
-class ___Node {
+class _Statement {
   /**
    * Construct a new Node
    * @param  {string} nodeType   The AST node type
@@ -67,15 +45,19 @@ class ___Node {
     
     return node;
   }
+
+  log() {}
 }
 
-class ___ProgramNode extends ___Node {
+class _ProgramStatement extends _Statement {
   constructor() {
     super("PROGRAM", 0);
   }
+
+  log() {}
 }
 
-class ___FunctionCallNode extends ___Node {
+class _FunctionCallStatement extends _Statement {
   /**
    * Construct a new FunctionCall Node
    * @param  {string} nodeType          The AST node type
@@ -89,8 +71,6 @@ class ___FunctionCallNode extends ___Node {
     this.branch = undefined;
     this.name = name;
     this.args = args;
-
-    this.isDebug && console.log("\x1b[32m%s\x1b[0m", lineNumber + ": Function Call " + name + "(" + JSON.stringify(args) + ")");
   }
 
   /**
@@ -106,9 +86,13 @@ class ___FunctionCallNode extends ___Node {
 
     return node;
   }
+
+  log() {
+    console.debug("\x1b[32m%s\x1b[0m", this.lineNumber + ": Function Call " + this.name + "(" + JSON.stringify(this.args) + ")");
+  }
 }
 
-class ___ReturnNode extends ___Node {
+class _ReturnValueStatement extends _Statement {
   /**
    * [constructor description]
    * @param  {string} nodeType          The AST node type
@@ -117,17 +101,14 @@ class ___ReturnNode extends ___Node {
    */
   constructor(nodeType, lineNumber, value) {
     super(nodeType, lineNumber);
-
     this.value = value;
-
-    this.isDebug && console.log("\x1b[34m%s\x1b[0m", lineNumber + ": Returning " + value);
   }
 
   /**
    * Find the previous Node that was at a higher depth
-   * @return {___Node}
+   * @return {_Statement}
    */
-  findPrev() {
+  findPrevious() {
     let searchNode = node.prev;
 
     while (searchNode.depth !== this.depth - 1) {
@@ -139,7 +120,7 @@ class ___ReturnNode extends ___Node {
 
   /**
    * Override the return function to manage unbranching
-   * @param {___Node} node  The next node
+   * @param {_Statement} node  The next node
    */
   add(node) {
     this.next = node;
@@ -150,13 +131,17 @@ class ___ReturnNode extends ___Node {
 
     // Set the previous node, to the last
     // node at the same depth
-    node.prev = this.findPrev(this.depth);
+    node.prev = this.findPrevious(this.depth);
 
     return node;
   }
+
+  log() {
+    console.log("\x1b[34m%s\x1b[0m", this.lineNumber + ": Returning " + this.value);
+  }
 }
 
-class ___AssignmentNode extends ___Node {
+class _AssignmentStatement extends _Statement {
   /**
    * Construct a new Assignment Node
    * @param  {string} nodeType          The AST node type
@@ -171,7 +156,11 @@ class ___AssignmentNode extends ___Node {
     this.name = name;
     this.value = value;
     this.displayValue = displayValue;
+  }
 
-    this.isDebug && console.log("\x1b[33m%s\x1b[0m", lineNumber + ": Assignment " + name + " = " + JSON.stringify(displayValue));
+  log() {
+    console.log("\x1b[33m%s\x1b[0m", lineNumber + ": Assignment " + name + " = " + JSON.stringify(displayValue));
   }
 }
+
+let _currentNode = new _ProgramStatement();

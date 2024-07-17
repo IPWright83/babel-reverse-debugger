@@ -1,12 +1,10 @@
 const utils = require("./utils");
 
 function inject({ t, path, ASTType }) {
-    if (utils.skip(path)) { return }
-
     utils.isDebug && console.debug("updates.inject");
 
     const { operator, argument, prefix } = path.node;
-    const name = utils.extractName(path) ?? argument.name;
+    const name = utils.getName(path) ?? argument.name;
     const lineNumber = utils.getLineNumber(path);
 
     const value = t.numericLiteral(1);
@@ -16,7 +14,7 @@ function inject({ t, path, ASTType }) {
         value
     );
 
-    const captureAssignmentCall = t.callExpression(t.identifier("___captureAssignment"), [
+    const captureAssignmentCall = t.callExpression(t.identifier("_captureAssignment"), [
         t.stringLiteral(ASTType),
         t.stringLiteral(name),
         t.numericLiteral(lineNumber),
@@ -39,5 +37,7 @@ function inject({ t, path, ASTType }) {
 }
 
 module.exports = {
+    skip: utils.skip,
+    getName: utils.getName,
     inject,
 }

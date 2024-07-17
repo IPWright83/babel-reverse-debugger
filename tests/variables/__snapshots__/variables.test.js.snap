@@ -3,78 +3,70 @@
 exports[`Variable Decorators Converts Arrow Function correctly 1`] = `
 ""use strict";
 
-var hello = ___captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB", function () {
-  ___instrumentFunction("ArrowFunctionExpression", "hello", 1, {});
-  return ___instrumentReturn("ReturnStatement", 1, "Hello World");
+const hello = _captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB", () => {
+  return "Hello World";
 });"
 `;
 
 exports[`Variable Decorators Converts Assign to Undefined correctly 1`] = `
 ""use strict";
 
-var count = ___captureAssignment("VariableDeclaration", "count", 1, 3, 3);
-count = ___captureAssignment("AssignmentExpression", "count", 2, undefined, undefined);"
+let count = _captureAssignment("VariableDeclaration", "count", 1, 3, 3);
+count = _captureAssignment("AssignmentExpression", "count", 2, undefined, undefined);"
 `;
 
 exports[`Variable Decorators Converts Assign to built in function result correctly 1`] = `
 ""use strict";
 
-var count = ___captureAssignment("VariableDeclaration", "count", 1, 3, 3);
-count = ___captureAssignment("AssignmentExpression", "count", 2, "\\u03BB", Math.max(1, 2, 3, 4));"
+let count = _captureAssignment("VariableDeclaration", "count", 1, 3, 3);
+count = _captureAssignment("AssignmentExpression", "count", 2, "\\u03BB", Math.max(1, 2, 3, 4));"
 `;
 
 exports[`Variable Decorators Converts Assign to function result correctly 1`] = `
 ""use strict";
 
-var sum = ___captureAssignment("VariableDeclaration", "sum", 1, "\\u03BB", function (a, b) {
-  ___instrumentFunction("ArrowFunctionExpression", "sum", 1, {
-    a: a,
-    b: b
-  });
-  return ___instrumentReturn("ReturnStatement", 1, a + b);
-});
-var result = ___captureAssignment("VariableDeclaration", "result", 2, "\\u03BB", sum(2, 4));"
+const sum = _captureAssignment("VariableDeclaration", "sum", 1, "\\u03BB", (a, b) => a + b);
+const result = _captureAssignment("VariableDeclaration", "result", 2, "\\u03BB", sum(2, 4));"
 `;
 
 exports[`Variable Decorators Converts Assign to operation correctly 1`] = `
 ""use strict";
 
-var count = ___captureAssignment("VariableDeclaration", "count", 1, 3, 3);
-count = ___captureAssignment("AssignmentExpression", "count", 2, 3 + 7, 3 + 7);"
+let count = _captureAssignment("VariableDeclaration", "count", 1, 3, 3);
+count = _captureAssignment("AssignmentExpression", "count", 2, 3 + 7, 3 + 7);"
 `;
 
 exports[`Variable Decorators Converts Boolean correctly 1`] = `
 ""use strict";
 
-var isTrue = ___captureAssignment("VariableDeclaration", "isTrue", 1, true, true);"
+const isTrue = _captureAssignment("VariableDeclaration", "isTrue", 1, true, true);"
 `;
 
 exports[`Variable Decorators Converts Chained assignment correctly 1`] = `
 ""use strict";
 
-var value = ___captureAssignment("VariableDeclaration", "value", 1, "\\u03BB", 1 + 2 + 3 + 4);"
+const value = _captureAssignment("VariableDeclaration", "value", 1, "\\u03BB", 1 + 2 + 3 + 4);"
 `;
 
 exports[`Variable Decorators Converts Function correctly 1`] = `
 ""use strict";
 
-var hello = ___captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB", function () {
-  ___instrumentFunction("FunctionExpression", "anonymous", 1, {});
-  return ___instrumentReturn("ReturnStatement", 1, "Hello World");
+const hello = _captureAssignment("VariableDeclaration", "hello", 1, "\\u03BB", function () {
+  return "Hello World";
 });"
 `;
 
 exports[`Variable Decorators Converts Increment+= correctly 1`] = `
 ""use strict";
 
-var count = ___captureAssignment("VariableDeclaration", "count", 1, 2, 2);
-count += ___captureAssignment("AssignmentExpression", "count", 2, count + 3, count + 3);"
+let count = _captureAssignment("VariableDeclaration", "count", 1, 2, 2);
+count += _captureAssignment("AssignmentExpression", "count", 2, count + 3, count + 3);"
 `;
 
 exports[`Variable Decorators Converts Loop correctly 1`] = `
 ""use strict";
 
-for (var i = ___captureAssignment("VariableDeclaration", "i", 1, 0, 0); i < 4; i += ___captureAssignment("UpdateExpression", "i", 1, i + 1, 1)) {
+for (let i = _captureAssignment("VariableDeclaration", "i", 1, 0, 0); i < 4; i += _captureAssignment("UpdateExpression", "i", 1, i + 1, 1)) {
   console.log(i);
 }"
 `;
@@ -82,20 +74,14 @@ for (var i = ___captureAssignment("VariableDeclaration", "i", 1, 0, 0); i < 4; i
 exports[`Variable Decorators Converts Mixed assignment correctly 1`] = `
 ""use strict";
 
-var sum = ___captureAssignment("VariableDeclaration", "sum", 1, "\\u03BB", function (a, b) {
-  ___instrumentFunction("ArrowFunctionExpression", "sum", 1, {
-    a: a,
-    b: b
-  });
-  return ___instrumentReturn("ReturnStatement", 1, a + b);
-});
-var value = ___captureAssignment("VariableDeclaration", "value", 2, "\\u03BB", 3 + sum(2, 1));"
+const sum = _captureAssignment("VariableDeclaration", "sum", 1, "\\u03BB", (a, b) => a + b);
+const value = _captureAssignment("VariableDeclaration", "value", 2, "\\u03BB", 3 + sum(2, 1));"
 `;
 
 exports[`Variable Decorators Converts Object correctly 1`] = `
 ""use strict";
 
-var foo = ___captureAssignment("VariableDeclaration", "foo", 1, {
+const foo = _captureAssignment("VariableDeclaration", "foo", 1, {
   bar: {
     baz: "foo-bar-baz"
   }
@@ -109,48 +95,48 @@ var foo = ___captureAssignment("VariableDeclaration", "foo", 1, {
 exports[`Variable Decorators Converts Re-assignment correctly 1`] = `
 ""use strict";
 
-var count = ___captureAssignment("VariableDeclaration", "count", 1, 0, 0);
-count = ___captureAssignment("AssignmentExpression", "count", 2, 3, 3);"
+let count = _captureAssignment("VariableDeclaration", "count", 1, 0, 0);
+count = _captureAssignment("AssignmentExpression", "count", 2, 3, 3);"
 `;
 
 exports[`Variable Decorators Converts Shorthand Operations correctly 1`] = `
 ""use strict";
 
-var count = ___captureAssignment("VariableDeclaration", "count", 1, 1, 1);
-count += ___captureAssignment("UpdateExpression", "count", 2, count + 1, 1);
-count -= ___captureAssignment("UpdateExpression", "count", 3, count - 1, 1);
-count *= ___captureAssignment("AssignmentExpression", "count", 4, count * 2, count * 2);"
+let count = _captureAssignment("VariableDeclaration", "count", 1, 1, 1);
+count += _captureAssignment("UpdateExpression", "count", 2, count + 1, 1);
+count -= _captureAssignment("UpdateExpression", "count", 3, count - 1, 1);
+count *= _captureAssignment("AssignmentExpression", "count", 4, count * 2, count * 2);"
 `;
 
 exports[`Variable Decorators Converts String correctly 1`] = `
 ""use strict";
 
-var hello = ___captureAssignment("VariableDeclaration", "hello", 1, "Hello World", "Hello World");"
+const hello = _captureAssignment("VariableDeclaration", "hello", 1, "Hello World", "Hello World");"
 `;
 
 exports[`Variable Decorators Converts const assignment correctly 1`] = `
 ""use strict";
 
-var fixedCount = ___captureAssignment("VariableDeclaration", "fixedCount", 1, 8, 8);"
+const fixedCount = _captureAssignment("VariableDeclaration", "fixedCount", 1, 8, 8);"
 `;
 
 exports[`Variable Decorators Converts let assignment correctly 1`] = `
 ""use strict";
 
-var count = ___captureAssignment("VariableDeclaration", "count", 1, 1, 1);"
+let count = _captureAssignment("VariableDeclaration", "count", 1, 1, 1);"
 `;
 
 exports[`Variable Decorators Converts multi value assignment correctly 1`] = `
 ""use strict";
 
-var w = ___captureAssignment("VariableDeclaration", "w", 1, 4, 4),
-  x = ___captureAssignment("VariableDeclaration", "x", 1, 3, 3);
-var y = ___captureAssignment("VariableDeclaration", "y", 2, undefined, undefined),
-  z = ___captureAssignment("VariableDeclaration", "z", 2, 54, 54);"
+const w = _captureAssignment("VariableDeclaration", "w", 1, 4, 4),
+  x = _captureAssignment("VariableDeclaration", "x", 1, 3, 3);
+var y = _captureAssignment("VariableDeclaration", "y", 2, undefined, undefined),
+  z = _captureAssignment("VariableDeclaration", "z", 2, 54, 54);"
 `;
 
 exports[`Variable Decorators Converts var assignment correctly 1`] = `
 ""use strict";
 
-var z = ___captureAssignment("VariableDeclaration", "z", 1, 54, 54);"
+var z = _captureAssignment("VariableDeclaration", "z", 1, 54, 54);"
 `;
