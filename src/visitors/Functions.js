@@ -5,7 +5,7 @@ const utils = require("./utils");
  */
 function skip(name, path) {
     // Our internal functions
-    if (name && name.startsWith("___")) {
+    if (name && name.startsWith("_")) {
         path.skip();
         return true;
     };
@@ -33,7 +33,6 @@ function getName(path) {
         return name;
     }
 
-    debugger;
     // Attempt to handle arrow functions inside a class
     //    class scientificCalculator {
     //       cos = (degrees) => Math.cos(degress * (Math.PI / 180))

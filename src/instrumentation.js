@@ -33,7 +33,7 @@ class _Statement {
 
   /**
    * Add a new node into the chain
-   * @param {___Node} node  The next node
+   * @param {_Statement} node  The next node
    */
   add(node) {
     this.next = node;
@@ -75,7 +75,7 @@ class _FunctionCallStatement extends _Statement {
 
   /**
    * Override the add function to manage branches
-   * @param {___Node} node  The next node
+   * @param {_Statement} node  The next node
    */
   add(node) {
     this.branch = node;

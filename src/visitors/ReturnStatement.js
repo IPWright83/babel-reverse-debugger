@@ -35,11 +35,11 @@ function inject({ t, path, ASTType }) {
     const { argument } = node;
 
     const lineNumber = argument?.loc?.start?.line;
-    if (lineNumber === undefined || name && name.startsWith("___")) {
+    if (lineNumber === undefined || name && name.startsWith("_")) {
         return;
     }
 
-    // Check if the argument is a call expression to ___instrumentReturn
+    // Check if the argument is a call expression to _instrumentReturn
     // This prevents infinite recursion
     if (t.isCallExpression(argument) && t.isIdentifier(argument.callee) && argument.callee.name === "_instrumentReturn") {
         return true;
