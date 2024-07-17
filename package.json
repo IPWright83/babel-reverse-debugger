@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "npx babel add.js --out-file out/add.js --quiet --config-file ./.babelrc-test",
-    "debug": "export PLUGIN_DEBUG=1 && npx --node-options=--inspect-brk babel add.js --out-file out/add.js --quiet --config-file ./.babelrc-test",
+    "debug:build": "export PLUGIN_DEBUG=1 && npx --node-options=--inspect-brk babel add.js --out-file out/add.js --quiet --config-file ./.babelrc-test",
     "start": "npm run build && node ./out/add.js --config-file ./.babelrc-test",
+    "debug:start": "npm run build && node --inspect-brk ./out/add.js --config-file ./.babelrc-test",
     "test": "export PLUGIN_DEBUG=0 && jest --runInBand"
   },
   "author": "IPWright83",

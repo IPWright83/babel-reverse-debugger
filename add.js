@@ -64,3 +64,5 @@ betterCalc.sin(180);
 betterCalc.cos(180);
 
 console.log(`Result of 14/2 = ${calculator.divide(14, 2)}`);
+_currentNode.start().walk();
+debugger;

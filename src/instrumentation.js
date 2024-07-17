@@ -4,10 +4,12 @@ function _instrumentFunction(nodeType, name, lineNumber, args) {
 
 function _instrumentReturn(nodeType, lineNumber, value) {
   _currentNode = _currentNode.add(new _ReturnValueStatement(nodeType, lineNumber, value));
+  return value;
 }
 
 function _captureAssignment(nodeType, name, lineNumber, displayValue, value) {
   _currentNode = _currentNode.add(new _AssignmentStatement(nodeType, name, lineNumber, displayValue, value));
+  return value;
 }
 
 class _Statement {
@@ -41,12 +43,34 @@ class _Statement {
     // Update the next node to point
     // back to this one    
     node.prev = this;
-    node.depth = depth;
+    node.depth = this.depth;
     
     return node;
   }
 
   log() {}
+
+  /**
+   * Return the _Statement at the start of the tree
+   */
+  start() {
+    let current = this;
+
+    while (current.prev) {
+      current = current.prev;
+    }
+
+    return current;
+  }
+
+  walk() {
+    let current = this;
+
+    while (current) {
+      current.log();
+      current = current.branch ?? current.next;
+    }
+  }
 }
 
 class _ProgramStatement extends _Statement {
@@ -88,7 +112,8 @@ class _FunctionCallStatement extends _Statement {
   }
 
   log() {
-    console.debug("\x1b[32m%s\x1b[0m", this.lineNumber + ": Function Call " + this.name + "(" + JSON.stringify(this.args) + ")");
+    const tabs = ' '.repeat(this.depth)
+    console.debug("\x1b[32m%s\x1b[0m", `${tabs}\\ ${this.name}(${JSON.stringify(this.args)}) :${this.lineNumber}`);
   }
 }
 
@@ -109,7 +134,7 @@ class _ReturnValueStatement extends _Statement {
    * @return {_Statement}
    */
   findPrevious() {
-    let searchNode = node.prev;
+    let searchNode = this.prev;
 
     while (searchNode.depth !== this.depth - 1) {
       searchNode = searchNode.prev;
@@ -137,7 +162,8 @@ class _ReturnValueStatement extends _Statement {
   }
 
   log() {
-    console.log("\x1b[34m%s\x1b[0m", this.lineNumber + ": Returning " + this.value);
+    const tabs = ' '.repeat(this.depth - 1)
+    console.log("\x1b[34m%s\x1b[0m", `${tabs} / return ${this.value} :${this.lineNumber} `);
   }
 }
 
@@ -159,7 +185,8 @@ class _AssignmentStatement extends _Statement {
   }
 
   log() {
-    console.log("\x1b[33m%s\x1b[0m", lineNumber + ": Assignment " + name + " = " + JSON.stringify(displayValue));
+    const tabs = " ".repeat(this.depth)
+    console.log("\x1b[33m%s\x1b[0m", `${tabs}| ${this.name} = ${JSON.stringify(this.displayValue)} : ${this.lineNumber} `);
   }
 }
 
