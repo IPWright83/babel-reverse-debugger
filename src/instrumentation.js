@@ -12,24 +12,24 @@ function ___captureAssignment(nodeType, name, lineNumber, displayValue, value) {
   ___currentNode = ___currentNode.add(new AssignmentNode(nodeType, name, lineNumber, displayValue, value));
 }
 
-/**
-  * Construct a new Node
-  * @param  {string} nodeType   The AST node type
-  * @param  {number} lineNumber The line number that this node corresponds to
-  * @param  {number} depth      The depth in the callstack
-  */
-function ___Node(nodeType, lineNumber) { 
-  return {
-    next: undefined,
-    prev: undefined,
-    isDebug: process.env.PLUGIN_DEBUG === '1',
-    depth: 0,
+// /**
+//   * Construct a new Node
+//   * @param  {string} nodeType   The AST node type
+//   * @param  {number} lineNumber The line number that this node corresponds to
+//   * @param  {number} depth      The depth in the callstack
+//   */
+// function ___Node(nodeType, lineNumber) { 
+//   return {
+//     next: undefined,
+//     prev: undefined,
+//     isDebug: process.env.PLUGIN_DEBUG === '1',
+//     depth: 0,
 
-    // This is used to allow stepping backwards into
-    // a function call from a return statement
-    branch_rewind: undefined, 
-  }
-}
+//     // This is used to allow stepping backwards into
+//     // a function call from a return statement
+//     branch_rewind: undefined, 
+//   }
+// }
 
 
 class ___Node {
