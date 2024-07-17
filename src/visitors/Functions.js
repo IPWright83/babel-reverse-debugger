@@ -33,6 +33,7 @@ function getName(path) {
         return name;
     }
 
+    debugger;
     // Attempt to handle arrow functions inside a class
     //    class scientificCalculator {
     //       cos = (degrees) => Math.cos(degress * (Math.PI / 180))
@@ -47,7 +48,8 @@ function getName(path) {
             return "_";
         }
 
-        if (node.type === "ArrowFunctionExpression" && (isInDefineProperty || isInCaptureAssignment)) {
+        if ((node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression") && 
+            (isInDefineProperty || isInCaptureAssignment)) {
             return parent.arguments?.[1]?.value;
         }
     }
