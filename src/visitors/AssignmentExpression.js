@@ -33,7 +33,6 @@ function getValues(t, node) {
   * Injects the recording of a value return from a function
   */
 function inject({ t, path, ASTType }) {
-    debugger;
     utils.isDebug && console.debug("assignments.inject");
 
     const { node } = path;

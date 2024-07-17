@@ -5,7 +5,14 @@ const utils = require("./utils");
  */
 function skip(name, path) {
     // Our internal functions
-    if (name && name.startsWith("___")) return true;
+    if (name && name.startsWith("___")) {
+        path.skip();
+        return true;
+    };
+
+    if (path.node.__processed) {
+        return true;
+    }
 
     // Code that we don't have any line numbers for
     if (path.node.loc == undefined || path.node.loc.start === undefined || path.node.loc.start.line === undefined) {
@@ -21,7 +28,6 @@ function skip(name, path) {
   */
 function getName(path) {
     const { node, parent } = path;
-
     const name = utils.getName(path);
     if (name) {
         return name;
@@ -33,12 +39,12 @@ function getName(path) {
     //    }
     if (["ArrowFunctionExpression", "FunctionExpression"].includes(node.type)) {
         const isInDefineProperty = parent.type === "CallExpression" && parent.callee?.name === "_defineProperty";
-        const isInCaptureAssignment = parent.type === "CallExpression" && parent.callee?.name === "___captureAssignment";
+        const isInCaptureAssignment = parent.type === "CallExpression" && parent.callee?.name === "_captureAssignment";
 
         // Force this function to be skipped as we end up with duplicate instrumentation calls
         // so we'll just use the ArrowFunctionExpression instead
         if (node.type === "FunctionExpression" && (isInDefineProperty)) {
-            return "___";
+            return "_";
         }
 
         if (node.type === "ArrowFunctionExpression" && (isInDefineProperty || isInCaptureAssignment)) {

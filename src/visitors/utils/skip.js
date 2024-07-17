@@ -7,6 +7,7 @@ const getLineNumber = require("./getLineNumber");
  */
 function skip(name, path) { 
   if (name && name.startsWith("_")) {
+    path.skip();
     return true;
   }
 

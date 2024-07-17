@@ -16,7 +16,8 @@ function skip(name, path) {
         return true;
     }
 
-    if (path.parentPath.container?.id?.name.startsWith("___")) {
+    if (path.parentPath.container?.id?.name.startsWith("_")) {
+        path.skip();
         return true;
     }
 

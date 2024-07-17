@@ -14,7 +14,6 @@ const visit = (t, ASTType) => (path) => {
   // Determine if we should skip the path
   const name = visitor.getName(path);
   if (visitor.skip(name, path)) {
-    path.skip();
     isDebug && console.log("\x1b[32m%s\x1b[0m", `Skipping: ${name} (${ASTType})`);
     return;
   }
@@ -24,7 +23,7 @@ const visit = (t, ASTType) => (path) => {
 
 module.exports = function (babel) {
   const { types: t, parse } = babel;
-  const instrumentationPath = path.join(__dirname, 'blank.js');
+  const instrumentationPath = path.join(__dirname, 'instrumentation.js');
   const code = fs.readFileSync(instrumentationPath, "utf8");
   
   return {
@@ -37,8 +36,10 @@ module.exports = function (babel) {
 
         // We need to parse our code into an AST and then insert it
         // into the body of the program so we can call out to the various
-        // functions later on
-        path.unshiftContainer("body", parse(code).program.body);
+        // functions later on. Don't do this when debugging
+        if (isDebug === false) {
+          path.unshiftContainer("body", parse(code).program.body);
+        }
       },
       Identifier(path) {
         if (path.node.name?.startsWith("_")) {

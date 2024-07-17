@@ -9,6 +9,11 @@ function getName(path) {
 
 function skip(names, path) {
     if (names.every(name => name.startsWith("_"))) {
+        path.skip();
+        return true;
+    }
+
+    if (utils.skip("", path)) {
         return true;
     }
 
