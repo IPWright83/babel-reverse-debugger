@@ -9,15 +9,9 @@ function getObjectExpression(t, objExpression) {
     const properties = objExpression.properties.map(prop => {
         if (prop.value.type === "ObjectExpression") {
             // If the property value is an object expression, recursively handle it
-            return t.objectProperty(
-                prop.key,
-                getObjectExpression(t, prop.value)
-            );
+            return t.objectProperty(prop.key, getObjectExpression(t, prop.value));
         } else {
-            return t.objectProperty(
-                prop.key,
-                getDisplayValue(t, prop.value)
-            );
+            return t.objectProperty(prop.key, getDisplayValue(t, prop.value));
         }
     });
 
