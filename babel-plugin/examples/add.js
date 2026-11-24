@@ -43,7 +43,9 @@ const foo = () => {
     return () => {
       return "baz";
     }
-  }
+  };
+
+  return bar;
 }
 
 (function (a, b) {
@@ -64,5 +66,6 @@ betterCalc.sin(180);
 betterCalc.cos(180);
 
 console.log(`Result of 14/2 = ${calculator.divide(14, 2)}`);
+console.log(foo()()());
 _currentNode.start().walk();
 debugger;
